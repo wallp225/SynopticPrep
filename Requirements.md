@@ -8,4 +8,9 @@ From the brief provided in the ReadMe.md file I will make the following assumpti
   * **Lesser** - Read questions and answers
   * **Minimal** - Read the questions only
   
+What I will need to find out:
+* Is there a collection of questions and answers already provided
+* Will there be a requirement to create and delete user accounts
+* Will there be a requirement to create and delete questions and answers
+  
 Once the full brief is provided I will review and amend these assumptions
