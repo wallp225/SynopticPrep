@@ -1,4 +1,4 @@
-﻿Things I need to do for YelpCamp:
+#Things I need to do for YelpCamp:
 Video 1
 ##Initialising the project
 * Add Landing Page
