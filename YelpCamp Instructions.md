@@ -1,149 +1,174 @@
-#Things I need to do for YelpCamp:
-Video 1
-##Initialising the project
+# Things I need to do for YelpCamp:
+## Video 1
+### Initialising the project
 * Add Landing Page
 * Add Campgrounds Page that lists all campgrounds
-Each campground has:
-* Name
-* Image
+  Each campground has:
+  * Name
+  * Image
 
 
 1. Initialise the project
-    npm init
+````npm init````
 2. Install express and ejs in to your project and saves the dependencies to the JSON file
-    npm install express ejs --save
+````npm install express ejs --save````
 3. Create your app.js
 4. Require express in to your app.js file:
-    var express = require("express");
+````
+var express = require("express");
+````
 5. Setup the port listening:    
-    app.listen(3000, function(){
-       console.log("The YelpCamp server has started");
-   });
+````
+app.listen(3000, function(){
+    console.log("The YelpCamp server has started");
+});
+````
 This allows you to see your project from the Project menu after selecting Run/URL thing.
-   6. Create the index route:
-    app.get("/", function(req, res) {
-       res.send("This will be the landing page");
-   });
-   7. Run the applications via the console to test the index route and server are all working:
-    node app.js
-   8. Create a views folder
-    mkdir views
-   9. Create a landing page file
-    touch views/landing.ejs
-   10. Add content to landing.ejs
-    goorm views/landing.ejs
-   11. Set the view engine for ejs files in the app.js file:
-    app.set("view engine", "ejs");
-   12. Restart the server to see changes made:
-    node app.js
-   13. Create a campsites route:
-    app.get("/campgrounds", function(req, res) {
-   });
-   14. Add an array of campsites to this route
-    app.get("/campgrounds", function(req, res) {
-       var campgrounds = [
-           {
-               name: "Salmon Creek",
-                  image: "img url"
-           },
-              {
-                  name: "Banjo Spring",
-                  image: "img url"
-              },
-              {
-                  name: "The Upsidedown",
-                  image: "img url"
-              },
-       ]
-   });
-   15. Add a line to render the page when the server is loaded after the array:
-    app.get("/campgrounds", function(req, res) {
-       var campgrounds = [];
-       res.render("campgrounds");
-   });
-   16. Create the campgrounds page in the views folder:
-    touch views/campgrounds.ejs
-   17. Open the file and add content:
-    goorm views/campgrounds.ejs
-   18. Restart the server and see if the page exists by going to /campgrounds:
-    url/campgrounds
-   19. In landing.ejs add a anchor tag with a link to the campgrounds page:
-    <a href="/campgrounds">View all campgrounds</a>
-   20. Restart the server and see if the link exists at the index page:
-    url/
-   21. Under the /campgrounds route in app.js pass the data of the campsites through:
-    res.render("campgrounds", {campgrounds: campgrounds});
-   22. In campgrounds.ejs display the data that has been passed:
-    <%= campgrounds %>
-   23. Restart the server and check /campgrounds for objects appearing
-   24. In campgrounds.ejs create a forEach that displays all campground names:
-    <% campgrounds.forEach(function(campground){ %>
-       <li>
-           <%= campground.name %>
-       </li>
-   <% }); %>
-   25. Restart the server and check the campgrounds page for campground names
-   26. Change the loop to include images:
-    <% campgrounds.forEach(function(campground){ %>
-       <div>
-           <h4>
-               <%= campground.name %>
-           </h4>
-           <img src="<%= campground.image %>">
-       </div>
-   <% }); %>
-   27. Restart server and refresh campgrounds page to see images
+6. Create the index route:
+````
+app.get("/", function(req, res) {
+    res.send("This will be the landing page");
+});
+````
+7. Run the applications via the console to test the index route and server are all working:
+````node app.js````
+8. Create a views folder
+````mkdir views````
+9. Create a landing page file
+````touch views/landing.ejs````
+10. Add content to landing.ejs
+````goorm views/landing.ejs````
+11. Set the view engine for ejs files in the app.js file:
+````
+app.set("view engine", "ejs");
+````
+12. Restart the server to see changes made:
+````node app.js````
+13. Create a campsites route:
+````
+app.get("/campgrounds", function(req, res) {
+});
+````
+14. Add an array of campsites to this route
+````
+app.get("/campgrounds", function(req, res) {
+    var campgrounds = [
+        {
+            name: "Salmon Creek",
+            image: "img url"
+        },
+        {
+            name: "Banjo Spring",
+            image: "img url"
+        },
+        {
+            name: "The Upsidedown",
+            image: "img url"
+        },
+    ]
+});
+````
+15. Add a line to render the page when the server is loaded after the array:
+````
+app.get("/campgrounds", function(req, res) {
+    var campgrounds = [];
+    res.render("campgrounds");
+});
+````
+16. Create the campgrounds page in the views folder:
+````touch views/campgrounds.ejs````
+17. Open the file and add content:
+````goorm views/campgrounds.ejs````
+18. Restart the server and see if the page exists by going to /campgrounds:
+````url/campgrounds````
+19. In landing.ejs add a anchor tag with a link to the campgrounds page:
+````
+<a href="/campgrounds">View all campgrounds</a>
+````
+20. Restart the server and see if the link exists at the index page:
+````url/````
+21. Under the /campgrounds route in app.js pass the data of the campsites through:
+````
+res.render("campgrounds", {campgrounds: campgrounds});
+````
+22. In campgrounds.ejs display the data that has been passed:
+````
+<%= campgrounds %>
+````
+23. Restart the server and check /campgrounds for objects appearing
+24. In campgrounds.ejs create a forEach that displays all campground names:
+````
+<% campgrounds.forEach(function(campground){ %>
+    <li>
+        <%= campground.name %>
+    </li>
+<% }); %>
+````
+25. Restart the server and check the campgrounds page for campground names
+26. Change the loop to include images:
+````
+<% campgrounds.forEach(function(campground){ %>
+    <div>
+        <h4>
+            <%= campground.name %>
+        </h4>
+        <img src="<%= campground.image %>">
+    </div>
+<% }); %>
+````
+27. Restart server and refresh campgrounds page to see images
 
 
-Video 2
-##Layout and Basic Styling
-      * Create our header and footer partials
-    <%- include("partials/header") %>
-    <%- include("partials/footer") %>
-      * Add in Bootstrap
+## Video 2
+### Layout and Basic Styling
+* Create our header and footer partials
+  ````
+  <%- include("partials/header") %>
+  <%- include("partials/footer") %>
+  ````
+* Add in Bootstrap
 
-
-      1. In the views directory create a new directory called partials:
-   Mkdir views/partials
-      2. Add a header and footer file in to the partials directory:
-   touch views/partials/header.ejs
-   touch views/partials/footer.ejs
-      3. Open header.ejs
-   Goorm views/partials/header.ejs
-      4. Add the HTML boilerplate to the header file:
-   <!DOCTYPE html>
+1. In the views directory create a new directory called partials:
+````Mkdir views/partials````
+2. Add a header and footer file in to the partials directory:
+````touch views/partials/header.ejs````
+````touch views/partials/footer.ejs````
+3. Open header.ejs
+````Goorm views/partials/header.ejs````
+4. Add the HTML boilerplate to the header file:
+````
+<!DOCTYPE html>
     <html>
         <head>
             <title>YelpCamp</title>
         </head>
         <body>
-         5. Open the footer file and complete the boilerplate:
-       <p>Trademark 2020</p>
-       </body>
-   </html>
-         6. Add links to the header and footer files in to our landing page:
-   <%- include(“partials/header”) %>
-
-   <h1>
+````
+5. Open the footer file and complete the boilerplate:
+````
+        <p>Trademark 2020</p>
+    </body>
+</html>
+````
+6. Add links to the header and footer files in to our landing page:
+````
+<%- include(“partials/header”) %>
+    <h1>
         Landing Page
     </h1>
     <p>
         Welcome to YelpCamp
     </p>
-
-
     <a href="/campgrounds">View all campgrounds</a>
-
-
-    <%- include(“partials/footer”) %>
-            7. Restart the server and have a look at the index page to see the footer
-            8. Add the header and footers to the campgrounds.ejs file
-   <%- include("partials/header") %>
+<%- include(“partials/footer”) %>
+````
+7. Restart the server and have a look at the index page to see the footer
+8. Add the header and footers to the campgrounds.ejs file
+````
+<%- include("partials/header") %>
     <h1>
         This is the campgrounds page
     </h1>
-
-
     <% campgrounds.forEach(function(campground){ %>
         <div>
             <h4>
@@ -152,10 +177,12 @@ Video 2
             <img src="<%= campground.image %>">
         </div>
     <% }); %>
-    <%- include("partials/footer") %>
-               9. Restart the server and check header and footer added to campgrounds.
-               10. Add Bootstrap CDN to project:
-    <!DOCTYPE html>
+<%- include("partials/footer") %>
+````
+9. Restart the server and check header and footer added to campgrounds.
+10. Add Bootstrap CDN to project:
+````
+<!DOCTYPE html>
     <html>
         <head>
         <title>YelpCamp</title>
@@ -165,40 +192,50 @@ Video 2
         <p>
             This is a header
         </p>
-               11. Restart server and refresh to see the changes bootstrap makes
+````
+11. Restart server and refresh to see the changes bootstrap makes
 
 
-Video 3
-## Creating New Campgrounds
-               * Setup new campground POST route
-               * Add in body-parser
-               * Setup route to show form
-               * Add basic unstyled form
+## Video 3
+### Creating New Campgrounds
+* Setup new campground POST route
+* Add in body-parser
+* Setup route to show form
+* Add basic unstyled form
 
 
-               1. Create a post route under the get route for campgrounds:
-   app.post("/campgrounds", function(req, res){
-        res.send("You have hit the POST route");
-        // get data from form and add to campgrounds array
-        // redirect back to campgrounds page
-    });
-                  2. Install body-parser into the project:
-   npm install body-parser --save
-                  3. Setup body parser in your app.js file:
-   var bodyParser = require(“body-parser”);
-                  4. Tell express to use body parser:
-   app.use(bodyParser.urlencoded({extended: true}));
-                  5. Restart the server to see if set up is correct, you will get no errors if correct.
-                  6. Create a new route for the new campground form:
-   app.get("/campgrounds/new", function(req, res){
-        res.render("new.ejs");
-    });
-                     7. Create the new.ejs file:
-   touch views/new.ejs
-                     8. Open the new.ejs file:
-   goorm views/new.ejs
-                     9. Setup a basic form in new.ejs:
-   <%- include("partials/header") %>
+1. Create a post route under the get route for campgrounds:
+````
+app.post("/campgrounds", function(req, res){
+    res.send("You have hit the POST route");
+    // get data from form and add to campgrounds array
+    // redirect back to campgrounds page
+});
+````
+2. Install body-parser into the project:
+````npm install body-parser --save````
+3. Setup body parser in your app.js file:
+````
+var bodyParser = require(“body-parser”);
+````
+4. Tell express to use body parser:
+````
+app.use(bodyParser.urlencoded({extended: true}));
+````
+5. Restart the server to see if set up is correct, you will get no errors if correct.
+6. Create a new route for the new campground form:
+````
+app.get("/campgrounds/new", function(req, res){
+    res.render("new.ejs");
+});
+````
+7. Create the new.ejs file:
+````touch views/new.ejs````
+8. Open the new.ejs file:
+````goorm views/new.ejs````
+9. Setup a basic form in new.ejs:
+````
+<%- include("partials/header") %>
     <h1>
         Create a new Campground
     </h1>
@@ -209,145 +246,158 @@ Video 3
             Submit
         </button>
     </form>
-    <%- include("partials/footer") %>
-                        10. Restart the server and go to url/campgrounds/new to see the form exists
-                        11. Enter something random in to name and image url and hit submit, this should display the POST route message.
-                        12. Move the array out from the route it is sat in, and place under the app.use and app.set lines:
-   app.use(bodyParser.urlencoded({extended: true}));
-    app.set("view engine", "ejs");
+<%- include("partials/footer") %>
+````
+10. Restart the server and go to url/campgrounds/new to see the form exists
+11. Enter something random in to name and image url and hit submit, this should display the POST route message.
+12. Move the array out from the route it is sat in, and place under the app.use and app.set lines:
+````
+app.use(bodyParser.urlencoded({extended: true}));
+app.set("view engine", "ejs");
+var campgrounds = []
+app.get("/campgrounds", function(req, res) {
+    res.render("campgrounds", {campgrounds: campgrounds});
+});
+````
+13. In the app.post route get the data from the form and add to the campgrounds array, and then redirect to campgrounds page:
+````
+app.post("/campgrounds", function(req, res){
+    // get data from form and add to campgrounds array
+    var name = req.body.name;
+    var image = req.body.image;
+    var newCampground = {name: name, image: image};
+    campgrounds.push(newCampground);
+    // redirect back to campgrounds page
+    res.redirect("/campgrounds");
+});
+````
+14. Restart the server, and refresh url/campgrounds/new.  Create a new campground and submit. This should create a new campground that appears at the bottom of url/campgrounds.  If you get an error message, make sure you only have res.redirect in the app.post and you have removed the re.render from the first line.  You can only have one res. command in each route.
+15. Add a link to campgrounds.ejs to link to new.ejs:
+````
+<a href="/campgrounds/new">Add new Campground</a>
+````
+16. Restart the server and navigate to url/campgrounds.  You should see a new link on the page, and clicking this will take you to the url/campgrounds/new form.
+17. On the new.ejs file add a link to take you back to url/campgrounds:
+````
+<a href="/campgrounds">Go back</a>
+````
 
+## Video 4
+### Style the campgrounds page
+* Add a better header/title
+* Make campgrounds display in a grid
 
-    var campgrounds = []
-
-   app.get("/campgrounds", function(req, res) {
-        res.render("campgrounds", {campgrounds: campgrounds});
-    });
-                           13. In the app.post route get the data from the form and add to the campgrounds array, and then redirect to campgrounds page:
-   app.post("/campgrounds", function(req, res){
-        // get data from form and add to campgrounds array
-        var name = req.body.name;
-        var image = req.body.image;
-        var newCampground = {name: name, image: image};
-        campgrounds.push(newCampground);
-        // redirect back to campgrounds page
-        res.redirect("/campgrounds");
-    });
-                              14. Restart the server, and refresh url/campgrounds/new.  Create a new campground and submit. This should create a new campground that appears at the bottom of url/campgrounds.  If you get an error message, make sure you only have res.redirect in the app.post and you have removed the re.render from the first line.  You can only have one res. command in each route.
-                              15. Add a link to campgrounds.ejs to link to new.ejs:
-   <a href="/campgrounds/new">Add new Campground</a>
-                              16. Restart the server and navigate to url/campgrounds.  You should see a new link on the page, and clicking this will take you to the url/campgrounds/new form.
-                              17. On the new.ejs file add a link to take you back to url/campgrounds:
-   <a href="/campgrounds">Go back</a>
-
-
-Video 4
-##Style the campgrounds page
-                                 * Add a better header/title
-                                 * Make campgrounds display in a grid
-
-
-                                 1. Open campgrounds.ejs
-                                 2. Add a header to the page and move the h1 in to it:
-   <header class="jumbotron">
-        <h1>
-            This is the campgrounds page
-        </h1>
-    </header>        
-                                    3. Excluding the header and footer includes, move the page content in to a new div with the class container:
-   <%- include("partials/header") %>
+1. Open campgrounds.ejs
+2. Add a header to the page and move the h1 in to it:
+````
+<header class="jumbotron">
+    <h1>
+        This is the campgrounds page
+    </h1>
+</header>
+````
+3. Excluding the header and footer includes, move the page content in to a new div with the class container:
+````
+<%- include("partials/header") %>
     <div class="container">
         <header class="jumbotron">
             <h1>
                 Welcome to YelpCamp!
             </h1>
-        <p>View our hand-picked campgrounds from all over the world
+            <p>View our hand-picked campgrounds from all over the world
         </header>        
-
-
-        <a href="/campgrounds/new">Add new Campground</a>
-
-
-        <% campgrounds.forEach(function(campground){ %>
+	<a href="/campgrounds/new">Add new Campground</a>
+	<% campgrounds.forEach(function(campground){ %>
             <div>
-                <h4>
-                    <%= campground.name %>        
+	        <h4>
+	            <%= campground.name %>        
                 </h4>
                 <img src="<%= campground.image %>">
             </div>
         <% }); %>
     </div>
-    <%- include("partials/footer") %>
-                                       4. Restart the server and then refresh the url/campgrounds page to see the new layout of the header
-                                       5. Move the anchor up into the jumbotron, but also make it a button:
-   <header class="jumbotron">
+<%- include("partials/footer") %>
+````
+4. Restart the server and then refresh the url/campgrounds page to see the new layout of the header
+5. Move the anchor up into the jumbotron, but also make it a button:
+````
+<header class="jumbotron">
+    <h1>
+        Welcome to YelpCamp!
+    </h1>
+    <p>
+        View our hand-picked campgrounds from all over the world
+    </p>
+    <p>
+        <a class="btn btn-primary btn-lg" href="/campgrounds/new">Add new Campground</a>
+    </p>
+</header>
+````
+6. Add a new container inside the jumbotron and place everything in it to retain spacing on resizing of window:
+````
+<header class="jumbotron">
+    <div class="container">
         <h1>
-            Welcome to YelpCamp!
+             Welcome to YelpCamp!
         </h1>
         <p>
             View our hand-picked campgrounds from all over the world
         </p>
         <p>
-            <a class="btn btn-primary btn-lg" href="/campgrounds/new">
-                Add new Campground
-            </a>
+            <a class="btn btn-primary btn-lg" href="/campgrounds/new">Add new Campground</a>
         </p>
-    </header>
-                                          6. Add a new container inside the jumbotron and place everything in it to retain spacing on resizing of window:
-   <header class="jumbotron">
-        <div class="container">
-            <h1>
-                Welcome to YelpCamp!
-            </h1>
-            <p>
-                View our hand-picked campgrounds from all over the world
-            </p>
-            <p>
-                <a class="btn btn-primary btn-lg" href="/campgrounds/new">
-                    Add new Campground
-               </a>
-            </p>
-        </div>
-    </header>
-                                             7.  Make the images appear in a grid using some Bootstrap classes:
-    <div class="row">
-        <% campgrounds.forEach(function(campground){ %>
-            <div class="col-md-3 col-sm-6">
-                <div class="thumbnail">
-                    <img src="<%= campground.image %>">
-                </div>                                        
-            </div>
-        <% }); %>
     </div>
-                                             8. Under the thumbnail class add another div with the caption class:
-   <div class="thumbnail">
-        <img src="<%= campground.image %>">
-        <div class="caption">
-            <h4>
-                <%= campground.name %>
-            </h4>
+</header>
+````
+7.  Make the images appear in a grid using some Bootstrap classes:
+````
+<div class="row">
+    <% campgrounds.forEach(function(campground){ %>
+        <div class="col-md-3 col-sm-6">
+            <div class="thumbnail">
+                <img src="<%= campground.image %>">
+            </div>                                        
         </div>
-    </div>                                        
-                                                9. Add some styling to the row class to make the grid work right when more data is added to campgrounds:
-   <div class="row" style="display:flex; flex-wrap: wrap;">
-                                                10. Make another change to row class to make text appear center:
-   <div class="row text-center" style="display:flex; flex-wrap: wrap;">
+    <% }); %>
+</div>
+````
+8. Under the thumbnail class add another div with the caption class:
+````
+<div class="thumbnail">
+    <img src="<%= campground.image %>">
+    <div class="caption">
+        <h4>
+            <%= campground.name %>
+        </h4>
+    </div>
+</div>
+````
+9. Add some styling to the row class to make the grid work right when more data is added to campgrounds:
+````
+<div class="row" style="display:flex; flex-wrap: wrap;">
+````
+10. Make another change to row class to make text appear center:
+````
+<div class="row text-center" style="display:flex; flex-wrap: wrap;">
+````
 
+## Video 5
+### Style the Navbar and Form
+* Add a navbar to all templates
+* Style the new campground form
 
-Video 5
-##Style the Navbar and Form
-                                                   * Add a navbar to all templates
-                                                   * Style the new campground form
-
-
-                                                   1. Add a navbar to campgrounds.ejs.  This is placed under the partials/header link:
-   <nav class="navbar navbar-default">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="/">YelpCamp</a>
-            </div>
+1. Add a navbar to campgrounds.ejs.  This is placed under the partials/header link:
+````
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/">YelpCamp</a>
         </div>
-     </nav>
-                                                      2. Expand on the navbar by adding some placeholder to links to the right of the navbar:
+    </div>
+</nav>
+````
+2. Expand on the navbar by adding some placeholder to links to the right of the navbar:
+````
 <nav class="navbar navbar-default">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -362,20 +412,39 @@ Video 5
         </div>
     </div>
 </nav>
-                                                         3. Move the nav bar to the header.ejs file
-                                                         4. In new.ejs add some bootstrap to input and buttons:
-   <input class="form-control" type="text" name="name" placeholder="name">
-    <input class="form-control" type="text" name="image" placeholder="image url">
-    <button class="btn btn-lg btn-default">
-        Submit
-    </button>
-                                                            5. Place everything excluding the partials in to a container:
-   <div class="container">
+````
+3. Move the nav bar to the header.ejs file
+4. In new.ejs add some bootstrap to input and buttons:
+````
+<input class="form-control" type="text" name="name" placeholder="name">
+<input class="form-control" type="text" name="image" placeholder="image url">
+<button class="btn btn-lg btn-default">
+   Submit
+</button>
+````
+5. Place everything excluding the partials in to a container:
+````
+<div class="container">
+    <h1>
+        Create a new Campground
+    </h1>
+    <form action="/campgrounds" method="POST">
+        <input class="form-control" type="text" name="name" placeholder="name">
+        <input class="form-control" type="text" name="image" placeholder="image url">
+        <button class="btn btn-lg btn-default">
+             Submit
+        </button>
+    </form>
+    <a href="/campgrounds">Go back</a>
+</div>
+````
+6. Now place all the content in a row within the container:
+````
+<div class="container">
+    <div class=”row”>        
         <h1>
             Create a new Campground
         </h1>
-
-
         <form action="/campgrounds" method="POST">
             <input class="form-control" type="text" name="name" placeholder="name">
             <input class="form-control" type="text" name="image" placeholder="image url">
@@ -385,236 +454,237 @@ Video 5
         </form>
         <a href="/campgrounds">Go back</a>
     </div>
-                                                               6. Now place all the content in a row within the container:
-   <div class="container">
-        <div class=”row”>        
-            <h1>
-                Create a new Campground
-            </h1>
-
-
-            <form action="/campgrounds" method="POST">
-                <input class="form-control" type="text" name="name" placeholder="name">
-                <input class="form-control" type="text" name="image" placeholder="image url">
-                <button class="btn btn-lg btn-default">
-                    Submit
-                </button>
-            </form>
-            <a href="/campgrounds">Go back</a>
-        </div>
-    </div>
-                                                                  7. Place the form content into another stylised div:
-   <div style="width: 30%; margin: 0 auto;">
-        <form action="/campgrounds" method="POST">
-            <input class="form-control" type="text" name="name" placeholder="name">
-            <input class="form-control" type="text" name="image" placeholder="image url">
-            <button class="btn btn-lg btn-default">
-                Submit
-            </button>
-        </form>
-    </div>
-                                                                     8. Add another bootstrap class to the button to make it larger:
-<button class=”btn btn-lg btn-default btn-block”>
-                                                                     9. Wrap each input in to another div with the class form-group:
-   <div class=”form-group”>
-       <input class="form-control" type="text" name="name" placeholder="name">
-   </div>
-    <div class=”form-group”>
-       <input class="form-control" type="text" name="image" placeholder="image url">
-   </div>
-    <div class=”form-group”>
-       <button class="btn btn-lg btn-default">
+</div>
+````
+7. Place the form content into another stylised div:
+````
+<div style="width: 30%; margin: 0 auto;">
+    <form action="/campgrounds" method="POST">
+        <input class="form-control" type="text" name="name" placeholder="name">
+        <input class="form-control" type="text" name="image" placeholder="image url">
+        <button class="btn btn-lg btn-default">
             Submit
         </button>
-    </div>
-                                                                        10. Centre the Create a New Campground text:
-   <h1 style="text-align: center;">
-        Create a new Campground
-    </h1>
-                                                                           11. Change the button colour by changing it’s class slightly:
-   <button class=”btn btn-lg btn-primary”>
-                                                                           12. Move the Go Back link to the line just under the form closing tags:
-       </form>
-        <a href="/campgrounds">Go back</a>
-    </div>
-                                                                              13. Add some margin to the div that appears after the Create A New Campground heading:
-   <h1 style="text-align: center;">
-        Create a new Campground
-    </h1>
-    <div style="width: 30%; margin: 25px auto;">
-                                                                                 14. Remove the Trademark from the footer
+    </form>
+</div>
+````
+8. Add another bootstrap class to the button to make it larger:
+````
+<button class=”btn btn-lg btn-default btn-block”>
+````
+9. Wrap each input in to another div with the class form-group:
+````
+<div class=”form-group”>
+    <input class="form-control" type="text" name="name" placeholder="name">
+</div>
+<div class=”form-group”>
+    <input class="form-control" type="text" name="image" placeholder="image url">
+</div>
+<div class=”form-group”>
+    <button class="btn btn-lg btn-default">
+        Submit
+    </button>
+</div>
+````
+10. Centre the Create a New Campground text:
+````
+<h1 style="text-align: center;">
+    Create a new Campground
+</h1>
+````
+11. Change the button colour by changing it’s class slightly:
+````
+<button class=”btn btn-lg btn-primary”>
+````
+12. Move the Go Back link to the line just under the form closing tags:
+````
+    </form>
+    <a href="/campgrounds">Go back</a>
+</div>
+````
+13. Add some margin to the div that appears after the Create A New Campground heading:
+````
+<h1 style="text-align: center;">
+    Create a new Campground
+</h1>
+<div style="width: 30%; margin: 25px auto;">
+````
+14. Remove the Trademark from the footer
 
 
+### Notes on Installing Mongo
+1. Mongod
+2. Echo “mongod --nojournal” > mongod
+3. ./mongod
+4. You will get permission denied
+5. Chmod a+x mongod
+6. ./mongod
+7. In a new terminal window: mongo
+8. “Show dbs” to show databases
+9. “Use dbname” to use a database name (dbname is placeholder, use the name of the database you want to use that was shown in “show dbs”)
+10. To quit mongo type exit
+11. Ctrl-C the mongod terminal when done
 
-
-
-
-Notes on Installing Mongo
-                                                                                 1. Mongod
-                                                                                 2. Echo “mongod --nojournal” > mongod
-                                                                                 3. ./mongod
-                                                                                 4. You will get permission denied
-                                                                                 5. Chmod a+x mongod
-                                                                                 6. ./mongod
-                                                                                 7. In a new terminal window: mongo
-                                                                                 8. “Show dbs” to show databases
-                                                                                 9. “Use dbname” to use a database name (dbname is placeholder, use the name of the database you want to use that was shown in “show dbs”)
-                                                                                 10. To quit mongo type exit
-                                                                                 11. Ctrl-C the mongod terminal when done
-
-Notes on using mongoose
+### Notes on using mongoose
 Use the following whenever requiring mongoose in your project:
-    const mongoose = require('mongoose');
-    mongoose.connect('mongodb://localhost:27017/db_name', {
-        useNewUrlParser: true,
-        useUnifiedTopology: true
-    })
-    .then(() => console.log('Connected to DB!'))
-    .catch(error => console.log(error.message));
+````
+const mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost:27017/db_name', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+})
+.then(() => console.log('Connected to DB!'))
+.catch(error => console.log(error.message));
+````
 
+### Notes about using Mongo
+````Show dbs```` - shows all the databases in your mongo shell
+````Use <databaseName>```` - will open up the named database for query
+````Show collections```` - will show all data collections within specified database
+````db.<collectionName>.find()```` - will display all entries within collection
 
-Notes about using Mongo
-                                                                                 * Show dbs - shows all the databases in your mongo shell
-                                                                                 * Use databaseName - will open up the named database for query
-                                                                                 * Show collections - will show all data collections within specified database
-                                                                                 * db.collectionName.find() - will display all entries within collection
+## Video 6
+### Add Mongoose
+* Install and configure mongoose
+* Setup campground model
+* Use campground model inside of our routes
 
-
-
-
-Video 6
-##Add Mongoose
-                                                                                 * Install and configure mongoose
-                                                                                 * Setup campground model
-                                                                                 * Use campground model inside of our routes
-
-
-                                                                                 1. Install mongoose in to your project:
-   Npm install mongoose --save
-                                                                                 2. Ensure mongod is running (new terminal window ./mongod, new terminal window mongo)
-                                                                                 3. Require mongoose within your app.js:
-    const mongoose = require('mongoose');
-    mongoose.connect('mongodb://localhost:27017/db_name', {
-        useNewUrlParser: true,
-        useUnifiedTopology: true
-    })
-    .then(() => console.log('Connected to DB!'))
-    .catch(error => console.log(error.message));
-                                                                                    4. Restart the server to make sure it all works
-                                                                                    5. Create a Schema and a model for the campgrounds:
-   // Schema setup
-   var campgroundSchema = new mongoose.Schema({
-       name: String,
-       image: String
-   });
-   var Campground = mongoose.model(“Campground, campgroundSchema);
-                                                                                    6. Create a campground entry:
-   Campground.create(
-        {
-           name: "Salmon Creek",
-            image: "img_url"
-       }, function (err, campground){
-           if(err) {
-               console.log(err);
-           } else {
-               console.log("Newly Created Campground");
-                console.log(campground);
-           }
-       }
-   );
-                                                                                       7. Restart the server and check the terminal to see if you get an error or notification of a newly created campground.
-                                                                                       8. Swap to the mongo terminal and check to see if the campground now exists:
-   Use yelp_camp
-   Show collections
-   db.campgrounds.find()
-Campgrounds should appear after running show collections
-And the campground you created should appear after running db.campgrounds.find()
-                                                                                       9. Try creating a second campground and check the database
-                                                                                       10. Comment out the Campground.create and delete the campgrounds array
-                                                                                       11. Update app.get(“/campgrounds”) to query the database instead:
-   app.get("/campgrounds", function(req, res) {
-        // Get all campgrounds from DB
-        Campground.find({}, function(err, allCampgrounds){
-            if(err){
-                console.log(err);
-            } else {
-                res.render("campgrounds", {campgrounds: allCampgrounds});        
-            }
-        });
-    });
-                                                                                          12. Restart the server and check the url/campgrounds page.  Only one or two campgrounds should be listed.
-                                                                                          13. app.post(“/campgrounds”) will no longer work as the array no longer exists, update app.post to use the database instead:
-   app.post(“/campgrounds”, function(req, res) {
-       // get data from form and add to campgrounds database
-       Var name = req.body.name;
-       Var image = req.body.image;
-       Var newCampground = {name: name, image: image};
-       // create a new campground and save to database
-       Campground.create(newCampground, function(err, newlyCreated){
-           if(err) {
-               console.log(err);
-           } else {
-               res.redirect(“/campgrounds”);
-           }
-       });
-   });
-                                                                                          14. Restart the server and go to url/campgrounds/new and create a new campground.  If it works it should go back to url/campgrounds and you should see the newly created campground displayed.
-
-
-
-
-Video 7
-##Show page
-                                                                                             * Review the RESTful routes
-                                                                                             * Add description to our campground model
-                                                                                             * Show db.collection.drop()
-                                                                                             * Add a show route/template
-
-
-RESTful Notes
-Name                url                verb                description
-=====================================================
-INDEX                /dogs                GET                Display a list of all dogs
-NEW                /dogs/new        GET                Displays form to make new dog
-CREATE        /dogs                POST                Add new dog to database
-SHOW                /dogs/:id        GET                Show a specific dog
-
-
-                                                                                             1. Create a new SHOW route in the app.js file:
-   app.get(“/campgrounds/:id”, function(req, res){
-       res.send(“This will be the SHOW page one day”);
-   });
-                                                                                             2. Restart the server and navigate to url/campgrounds/something, the message should display.
-                                                                                             3. Add a description to the campgroundSchema:
-   Var campgroundSchema = new mongoose.Schema({
-       name: String,
-       image: String,
-       description: String
-   });
-                                                                                             4. Swap to the mongo terminal window and clear the database:
-   db.campgrounds.drop()
-                                                                                             5. Go back to app.js and uncomment the Campground.create method, add a description property and create a new campground:
-   Campground.create(
-        {
-            name: "Banjo Spring",
-            image: "img_url",
-            description: "Twang that banjo at a spring!"
-        }, function (err, campground){
-            if(err) {
-                console.log(err);
-            } else {
-                console.log("Newly Created Campground");
-                console.log(campground);
-            }
+1. Install mongoose in to your project:
+````Npm install mongoose --save````
+2. Ensure mongod is running (new terminal window ````./mongod````, new terminal window ````mongo````)
+3. Require mongoose within your app.js:
+````
+const mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost:27017/db_name', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+})
+.then(() => console.log('Connected to DB!'))
+.catch(error => console.log(error.message));
+````
+4. Restart the server to make sure it all works
+5. Create a Schema and a model for the campgrounds:
+````
+// Schema setup
+var campgroundSchema = new mongoose.Schema({
+    name: String,
+    image: String
+});
+var Campground = mongoose.model(“Campground, campgroundSchema);
+````
+6. Create a campground entry:
+````
+Campground.create(
+    {
+        name: "Salmon Creek",
+        image: "img_url"
+    }, function (err, campground){
+        if(err) {
+            console.log(err);
+        } else {
+            console.log("Newly Created Campground");
+            console.log(campground);
         }
-                );
-                                                                                                6. Restart the server and see if the campground is created.
-                                                                                                7. Swap to the mongo terminal and check there is an entry in the database.
-   db.campgrounds.find()
+    }
+);
+````
+7. Restart the server and check the terminal to see if you get an error or notification of a newly created campground.
+8. Swap to the mongo terminal and check to see if the campground now exists:
+````Use yelp_camp````````Show collections````````db.campgrounds.find()````
+Campgrounds should appear after running ````show collections````
+And the campground you created should appear after running ````db.campgrounds.find()````
+9. Try creating a second campground and check the database
+10. Comment out the Campground.create and delete the campgrounds array
+11. Update app.get(“/campgrounds”) to query the database instead:
+````
+app.get("/campgrounds", function(req, res) {
+    // Get all campgrounds from DB
+    Campground.find({}, function(err, allCampgrounds){
+        if(err){
+            console.log(err);
+        } else {
+            res.render("campgrounds", {campgrounds: allCampgrounds});        
+        }
+    });
+});
+````
+12. Restart the server and check the url/campgrounds page.  Only one or two campgrounds should be listed.
+13. app.post(“/campgrounds”) will no longer work as the array no longer exists, update app.post to use the database instead:
+````
+app.post(“/campgrounds”, function(req, res) {
+    // get data from form and add to campgrounds database
+    var name = req.body.name;
+    var image = req.body.image;
+    var newCampground = {name: name, image: image};
+    // create a new campground and save to database
+    Campground.create(newCampground, function(err, newlyCreated){
+        if(err) {
+            console.log(err);
+        } else {
+            res.redirect(“/campgrounds”);
+        }
+    });
+});
+````
+14. Restart the server and go to url/campgrounds/new and create a new campground.  If it works it should go back to url/campgrounds and you should see the newly created campground displayed.
 
 
-Video 8
-##Show page continued
+## Video 7
+### Show page
+* Review the RESTful routes
+* Add description to our campground model
+* Show db.collection.drop()
+* Add a show route/template
+
+#### RESTful Notes
+| Name | url | verb | description |
+|------|-----|------|-------------|
+| INDEX | /dogs | GET | Display a list of all dogs |
+| NEW | /dogs/new | GET | Displays form to make new dog |
+| CREATE | /dogs | POST | Add new dog to database |
+| SHOW | /dogs/:id | GET | Show a specific dog |
+
+1. Create a new SHOW route in the app.js file:
+````
+app.get(“/campgrounds/:id”, function(req, res){
+    res.send(“This will be the SHOW page one day”);
+});
+````
+2. Restart the server and navigate to url/campgrounds/something, the message should display.
+3. Add a description to the campgroundSchema:
+````
+var campgroundSchema = new mongoose.Schema({
+    name: String,
+    image: String,
+    description: String
+});
+````
+4. Swap to the mongo terminal window and clear the database:
+````db.campgrounds.drop()````
+5. Go back to app.js and uncomment the Campground.create method, add a description property and create a new campground:
+````
+Campground.create(
+    {
+        name: "Banjo Spring",
+        image: "img_url",
+        description: "Twang that banjo at a spring!"
+    }, function (err, campground){
+        if(err) {
+            console.log(err);
+        } else {
+            console.log("Newly Created Campground");
+            console.log(campground);
+        }
+    }
+);
+````
+6. Restart the server and see if the campground is created.
+7. Swap to the mongo terminal and check there is an entry in the database.
+````db.campgrounds.find()````
+
+
+## Video 8
+### Show page continued
                                                                                                    1. Rename campgrounds.ejs to index.ejs and change the index route to reflect the change:
    app.get("/campgrounds", function(req, res) {
         // Get all campgrounds from DB
