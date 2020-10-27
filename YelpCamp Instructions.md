@@ -23,7 +23,7 @@ app.listen(3000, function(){
     console.log("The YelpCamp server has started");
 });
 ````
-This allows you to see your project from the Project menu after selecting Run/URL thing.
+This allows you to see your project from the Project menu after selecting Run/URL thing.<br>
 6. Create the index route:
 ````
 app.get("/", function(req, res) {
@@ -131,7 +131,7 @@ res.render("campgrounds", {campgrounds: campgrounds});
 1. In the views directory create a new directory called partials:
 ````Mkdir views/partials````
 2. Add a header and footer file in to the partials directory:
-````touch views/partials/header.ejs````
+````touch views/partials/header.ejs````<br>
 ````touch views/partials/footer.ejs````
 3. Open header.ejs
 ````Goorm views/partials/header.ejs````
@@ -202,7 +202,6 @@ res.render("campgrounds", {campgrounds: campgrounds});
 * Add in body-parser
 * Setup route to show form
 * Add basic unstyled form
-
 
 1. Create a post route under the get route for campgrounds:
 ````
@@ -281,6 +280,7 @@ app.post("/campgrounds", function(req, res){
 ````
 <a href="/campgrounds">Go back</a>
 ````
+
 
 ## Video 4
 ### Style the campgrounds page
@@ -538,9 +538,9 @@ mongoose.connect('mongodb://localhost:27017/db_name', {
 ````
 
 ### Notes about using Mongo
-````Show dbs```` - shows all the databases in your mongo shell
-````Use <databaseName>```` - will open up the named database for query
-````Show collections```` - will show all data collections within specified database
+````Show dbs```` - shows all the databases in your mongo shell<br>
+````Use <databaseName>```` - will open up the named database for query<br>
+````Show collections```` - will show all data collections within specified database<br>
 ````db.<collectionName>.find()```` - will display all entries within collection
 
 ## Video 6
@@ -590,8 +590,10 @@ Campground.create(
 ````
 7. Restart the server and check the terminal to see if you get an error or notification of a newly created campground.
 8. Swap to the mongo terminal and check to see if the campground now exists:
-````Use yelp_camp````````Show collections````````db.campgrounds.find()````
-Campgrounds should appear after running ````show collections````
+````Use yelp_camp````
+````Show collections````
+````db.campgrounds.find()````
+Campgrounds should appear after running ````show collections````<br>
 And the campground you created should appear after running ````db.campgrounds.find()````
 9. Try creating a second campground and check the database
 10. Comment out the Campground.create and delete the campgrounds array
@@ -685,271 +687,314 @@ Campground.create(
 
 ## Video 8
 ### Show page continued
-                                                                                                   1. Rename campgrounds.ejs to index.ejs and change the index route to reflect the change:
-   app.get("/campgrounds", function(req, res) {
-        // Get all campgrounds from DB
-        Campground.find({}, function(err, allCampgrounds){
-            if(err){
-                console.log(err);
-            } else {
-                res.render("index", {campgrounds: allCampgrounds});        
-            }
-        });
-                });
-                                                                                                      2. Open index.ejs and add a new paragraph under the campground.name div:
-   <div class="caption">
-        <h4>
-           <%= campground.name %>
-        </h4>
-    </div>
-    <p>
-        <a href="" class="btn btn-primary">More Info</a>
-    </p>
-                                                                                                         3. Restart the server and see the change to url/campgrounds
-                                                                                                         4. Go back to index.ejs and add a link to the campground page by updating the href:
-   href=”/campgrounds/<%= campground._id %>”
-                                                                                                         5. Restart the server and go to url/campgrounds and click the More Info button.  This should now take you to the SHOW page for that campsite (url/campgrounds/campgroundId) but display the This is the SHOW route message.
-                                                                                                         6. Back in app.js update the SHOW route to display the campground name:
-   // Show Route - shows more info about one campground
-    app.get("/campgrounds/:id", function(req, res){
-        // find the campground with the provided ID
-        Campground.findById(req.params.id, function(err, foundCampground) {
-            if(err) {
-                console.log(err);
-            } else {
-                // render show template with that campground
-                res.render("show", {campground: foundCampground});
-            }
-        });
+
+1. Rename campgrounds.ejs to index.ejs and change the index route to reflect the change:
+````
+app.get("/campgrounds", function(req, res) {
+    // Get all campgrounds from DB
+    Campground.find({}, function(err, allCampgrounds){
+        if(err){
+            console.log(err);
+        } else {
+            res.render("index", {campgrounds: allCampgrounds});        
+        }
     });
-                                                                                                            7. Over in show.ejs update the page so that it displays the campground name:
-   <p>
+});
+````
+2. Open index.ejs and add a new paragraph under the campground.name div:
+````
+<div class="caption">
+    <h4>
         <%= campground.name %>
-    </p>
-                                                                                                               8. Restart the server and click on More Info for a campground.  The SHOW page should display, showing the campground name.
-                                                                                                               9. Change the show.ejs file to display an image and description, moving the title in to the header:
-   <h1>
-        <%= campground.name %>
-    </h1>
-
-
-    <img src="<%= campground.image %>">
-
-
-    <p>
-        <%= campground.description %>
-    </p>
-                                                                                                                  10. Restart the server and update the url/campground/campgroundId page and you should see the name, image and description.
-                                                                                                                  11. Add the include partials lines to the show.ejs:
-    <%- include("partials/header") %>
-   Show.ejs page content
-    <%- include("partials/footer") %>
-                                                                                                                     12. Update new.ejs to include a description field:
-   <div class="form-group">
-        <input class="form-control" type="text" name="image" placeholder="image url">
-    </div>
-    <div class="form-group">
-        <input class="form-control" type="text" name="description" placeholder="description">
-    </div>
-    <div class="form-group">
-        <button class="btn btn-lg btn-primary btn-block">
-            Submit
-        </button>
-    </div>
-                                                                                                                        13. In app.js have the create route collect the description of the campground:
-   // Create Route - Add new campground to database
-    app.post("/campgrounds", function(req, res){
-        // get data from form and add to campgrounds array
-        var name = req.body.name;
-        var image = req.body.image;
-        var desc = req.body.description;
-        var newCampground = {name: name, image: image, description: desc};
-        // Create a new campground and save to DB
-        Campground.create(newCampground, function(err, newlyCreated){
-            if(err) {
-                console.log(err)
-            } else {
-                res.redirect("/campgrounds");
-            }
-        });
-    });
-                                                                                                                           14. Restart the server and create a new campground at url/campgrounds/new.  Once created click on the More Info and you should see all the details.
-
-
-Video 9
-##Refactor Mongoose Code
-                                                                                                                           * Create a models directory
-                                                                                                                           * Use module.exports
-                                                                                                                           * Require everything correctly
-
-
-Code is now at version 3
-
-
-                                                                                                                           1. Create a new directory called models and place a campground.js file within:
-   mkdir models
-   touch models/campground.js
-   goorm models/campground.js
-                                                                                                                           2. Cut the campgroundSchema content and paste in to the campground.js file, including the require of mongoose and an export:
-   const mongoose         = require('mongoose');
-            // looks like you don’t have to include all the extra mongoose guff in the model files
-
-
-    // Schema setup
-    var campgroundSchema = new mongoose.Schema({
-        name: String,
-        image: String,
-        description: String
-    });
-
-
-    module.exports = mongoose.model("Campground", campgroundSchema);
-                                                                                                                              3. Require the new campground.js file in to your app.js:
-   Campground = require(“./models/campground”);
-                                                                                                                              4. Test everything works by restarting the server and refreshing the url/campgrounds page.  If you see campgrounds it worked!
-
-
-Video 10
-##Add seeds file
-                                                                                                                                 * Add a seeds.js file
-                                                                                                                                 * Run the seeds file every time the server starts
-
-
-                                                                                                                                 1. Create a seeds file in your v3 directory:
-   touch seeds.js
-                                                                                                                                 2. Open seeds.js:
-   goorm seeds.js
-                                                                                                                                 3. Require mongoose:
-   var mongoose = require(“mongoose”);
-                                                                                                                                 4. Require campground model:
-   var Campground = require(“./models/campground”);
-                                                                                                                                 5. Clear the database with a method:
-   Campground.remove({}, function(err){
-       if(err){
-           console.log(err);
-       } else {
-           console.log(“Removed campgrounds”);
-       }
-   });
-                                                                                                                                 6. In your app.js file require the seeds.js file:
-   var seedDB = require(“./seeds”);
-   seedDB();
-                                                                                                                                 7. Add an exports to your seeds.js file:
-Module.exports = seedDB;
-                                                                                                                                 8. Restart the server, you should see Removed campgrounds in your terminal window.  You are also likely to see a DeprecationWarning.  This can be ignored or you could replace Campground.remove({}... with Campground.deleteMany({}...  Refreshing the url/campgrounds page will show the campgrounds have been removed.
-                                                                                                                                 9. Create some sample data for the seeds.js file to use:
-   Var data = [
-       {
-           Name: “Cloud’s Rest”,
-           Image: “img_url”,
-           Description: “Some text here”
-       } x3
-   ]
-                                                                                                                                 10. In the seedDB function create a loop:
-   // Add a few campgrounds
-   data.forEach(function(seed){
-       Campground.create(seed, function(err, data) {
-           if(err) {
-                console.log(err);
-           } else {
-               console.log(“Removed campgrounds”);
-           }
-       });
-   });
-                                                                                                                                    11. Ensure this new loop sits within the else statement of Campground.deleteMany or .remove, but after the console.log(“Removed campgrounds”):
-   function seedDB(){
-       // Remove all campgrounds
-        // Campground.remove({}, function(err){
-        Campground.deleteMany({}, function(err){
-            if(err) {
-                console.log(err);
-            } else {
-                console.log("Removed campgrounds");
-                // Add a few campgrounds
-                data.forEach(function(seed){
-                    Campground.create(seed, function(err, data){
-                        if(err) {
-                            console.log(err);
-                        } else {
-                            console.log("added a campground");
-                        }
-                    });
-                });
-            }
-        });
-        // add a few comments
-    }
-                                                                                                                                       12. Restart the server, the terminal should display:
-   Removed campgrounds
-   Added a campground
-   Added a campground
-   Added a campground
-                                                                                                                                       13. Refresh the url/campgrounds page and you should see 3 campgrounds.
-                                                                                                                                       14. Create a comment within the Campground.create method:
-   Campground.create(seed, function(err, campground){
+    </h4>
+</div>
+<p>
+    <a href="" class="btn btn-primary">More Info</a>
+</p>
+````
+3. Restart the server and see the change to url/campgrounds
+4. Go back to index.ejs and add a link to the campground page by updating the href:
+````
+<a href=”/campgrounds/<%= campground._id %>”>
+````
+5. Restart the server and go to url/campgrounds and click the More Info button.  This should now take you to the SHOW page for that campsite (url/campgrounds/campgroundId) but display the This is the SHOW route message.
+6. Back in app.js update the SHOW route to display the campground name:
+````
+// Show Route - shows more info about one campground
+app.get("/campgrounds/:id", function(req, res){
+    // find the campground with the provided ID
+    Campground.findById(req.params.id, function(err, foundCampground) {
         if(err) {
             console.log(err);
         } else {
-            console.log("added a campground");
-            // create a comment
-            Comment.create({
-                text: "This place is great but I wish there was Wifi",
-                author: "Homer"
-            }, function(err, comment) {
-                if(err){
-                    console.log(err);
-                } else {
-                    campground.comments.push(comment);
-                    campground.save();
-                    console.log("created new comment");
-                }
+            // render show template with that campground
+            res.render("show", {campground: foundCampground});
+        }
+    });
+});
+````
+7. Over in show.ejs update the page so that it displays the campground name:
+````
+<p>
+    <%= campground.name %>
+</p>
+````
+8. Restart the server and click on More Info for a campground.  The SHOW page should display, showing the campground name.
+9. Change the show.ejs file to display an image and description, moving the title in to the header:
+````
+<h1>
+    <%= campground.name %>
+</h1>
+<img src="<%= campground.image %>">
+<p>
+    <%= campground.description %>
+</p>
+````
+10. Restart the server and update the url/campground/campgroundId page and you should see the name, image and description.
+11. Add the include partials lines to the show.ejs:
+````
+<%- include("partials/header") %>
+    Show.ejs page content
+<%- include("partials/footer") %>
+````
+12. Update new.ejs to include a description field:
+````
+<div class="form-group">
+    <input class="form-control" type="text" name="image" placeholder="image url">
+</div>
+<div class="form-group">
+    <input class="form-control" type="text" name="description" placeholder="description">
+</div>
+<div class="form-group">
+    <button class="btn btn-lg btn-primary btn-block">
+        Submit
+    </button>
+</div>
+````
+13. In app.js have the create route collect the description of the campground:
+````
+// Create Route - Add new campground to database
+app.post("/campgrounds", function(req, res){
+    // get data from form and add to campgrounds array
+    var name = req.body.name;
+    var image = req.body.image;
+    var desc = req.body.description;
+    var newCampground = {name: name, image: image, description: desc};
+    // Create a new campground and save to DB
+    Campground.create(newCampground, function(err, newlyCreated){
+        if(err) {
+            console.log(err)
+        } else {
+            res.redirect("/campgrounds");
+        }
+    });
+});
+````
+14. Restart the server and create a new campground at url/campgrounds/new.  Once created click on the More Info and you should see all the details.
+
+
+## Video 9
+### Refactor Mongoose Code
+* Create a models directory
+* Use module.exports
+* Require everything correctly
+
+Code is now at version 3
+
+1. Create a new directory called models and place a campground.js file within:
+````mkdir models````
+````touch models/campground.js````
+````goorm models/campground.js````
+2. Cut the campgroundSchema content and paste in to the campground.js file, including the require of mongoose and an export:
+````
+const mongoose = require('mongoose');
+// looks like you don’t have to include all the extra mongoose guff in the model files
+
+// Schema setup
+var campgroundSchema = new mongoose.Schema({
+    name: String,
+    image: String,
+    description: String
+});
+
+module.exports = mongoose.model("Campground", campgroundSchema);
+````
+3. Require the new campground.js file in to your app.js:
+````
+Campground = require(“./models/campground”);
+````
+4. Test everything works by restarting the server and refreshing the url/campgrounds page.  If you see campgrounds it worked!
+
+
+## Video 10
+### Add seeds file
+* Add a seeds.js file
+* Run the seeds file every time the server starts
+
+1. Create a seeds file in your v3 directory:
+````touch seeds.js````
+2. Open seeds.js:
+````goorm seeds.js````
+3. Require mongoose:
+````
+var mongoose = require(“mongoose”);
+````
+4. Require campground model:
+````
+var Campground = require(“./models/campground”);
+````
+5. Clear the database with a method:
+````
+Campground.remove({}, function(err){
+    if(err){
+        console.log(err);
+    } else {
+        console.log(“Removed campgrounds”);
+    }
+});
+````
+6. In your app.js file require the seeds.js file:
+````
+var seedDB = require(“./seeds”);
+seedDB();
+````
+7. Add an exports to your seeds.js file:
+````
+Module.exports = seedDB;
+````
+8. Restart the server, you should see Removed campgrounds in your terminal window.  You are also likely to see a DeprecationWarning.  This can be ignored or you could replace Campground.remove({}... with Campground.deleteMany({}...  Refreshing the url/campgrounds page will show the campgrounds have been removed.
+9. Create some sample data for the seeds.js file to use:
+````
+var data = [
+    {
+        name: “Cloud’s Rest”,
+        image: “img_url”,
+        description: “Some text here”
+     } x3
+]
+````
+10. In the seedDB function create a loop:
+````
+// Add a few campgrounds
+data.forEach(function(seed){
+    Campground.create(seed, function(err, data) {
+        if(err) {
+            console.log(err);
+        } else {
+            console.log(“Removed campgrounds”);
+        }
+    });
+});
+````
+11. Ensure this new loop sits within the else statement of Campground.deleteMany or .remove, but after the console.log(“Removed campgrounds”):
+````
+function seedDB(){
+    // Remove all campgrounds
+    // Campground.remove({}, function(err){
+    Campground.deleteMany({}, function(err){
+        if(err) {
+            console.log(err);
+        } else {
+            console.log("Removed campgrounds");
+            // Add a few campgrounds
+            data.forEach(function(seed){
+                Campground.create(seed, function(err, data){
+                    if(err) {
+                        console.log(err);
+                    } else {
+                        console.log("added a campground");
+                    }
+                });
             });
         }
     });
-                                                                                                                                          15. Set up a require for Comment, even though we don’t have a Comment file set up yet:
-Comment = require(“./models/comment”);
-
-
-
-
-Video 11
-##Add the comment model
-                                                                                                                                             * Make our errors go away
-                                                                                                                                             * Display comments on campground show page
-
-
-                                                                                                                                             1. Create the comment.js file:
-   Touch models/comment.js
-                                                                                                                                             2. Open the comment file:
-   Goorm models/comment.js
-                                                                                                                                             3. Prepare the module.exports:
-   Module.exports = ;
-                                                                                                                                             4. Import mongoose:
-   Var mongoose = require(“mongoose”);
-                                                                                                                                             5. Now create the comment model:
-   Var commentSchema = mongoose.Schema({
-       Text: String,
-       Author: String
-   });
-                                                                                                                                             6. And update the exports:
-   Module.exports = mongoose.model(“Comment”, commentSchema);
-                                                                                                                                             7. Restart the server and check for errors.
-                                                                                                                                             8. You will get errors.  Stick with the videos
-                                                                                                                                             9. In campground.js make a reference to the comments:
-   var campgroundSchema = new mongoose.Schema({
-        name: String,
-        image: String,
-        description: String,
-        comments: [
-            {
-                type: mongoose.Schema.Types.ObjectID,
-                ref: "Comment"
+    // add a few comments
+}
+````
+12. Restart the server, the terminal should display:
+````
+Removed campgrounds
+Added a campground
+Added a campground
+Added a campground
+````
+13. Refresh the url/campgrounds page and you should see 3 campgrounds.
+14. Create a comment within the Campground.create method:
+````
+Campground.create(seed, function(err, campground){
+    if(err) {
+        console.log(err);
+    } else {
+        console.log("added a campground");
+        // create a comment
+        Comment.create({
+            text: "This place is great but I wish there was Wifi",
+            author: "Homer"
+        }, function(err, comment) {
+            if(err){
+                console.log(err);
+            } else {
+                campground.comments.push(comment);
+                campground.save();
+                console.log("created new comment");
             }
-        ]
-    });
-                                                                                                                                                10. Restart the server again and you should get no errors.  Check the url/campgrounds and the database for entries.
-                                                                                                                                                11. Go to app.js and delete all the comment out section that was creating a new campground.
-                                                                                                                                                12. Update the SHOW route so that comments are retrieved too:
+        });
+    }
+});
+````
+15. Set up a require for Comment, even though we don’t have a Comment file set up yet:
+````
+Comment = require(“./models/comment”);
+````
+
+
+## Video 11
+### Add the comment model
+* Make our errors go away
+* Display comments on campground show page
+
+1. Create the comment.js file:
+````Touch models/comment.js````
+2. Open the comment file:
+````Goorm models/comment.js````
+3. Prepare the module.exports:
+````
+Module.exports = ;
+````
+4. Import mongoose:
+````
+var mongoose = require(“mongoose”);
+````
+5. Now create the comment model:
+````
+var commentSchema = mongoose.Schema({
+    text: String,
+    author: String
+});
+````
+6. And update the exports:
+````
+Module.exports = mongoose.model(“Comment”, commentSchema);
+````
+7. Restart the server and check for errors.
+8. You will get errors.  Stick with the videos
+9. In campground.js make a reference to the comments:
+````
+var campgroundSchema = new mongoose.Schema({
+    name: String,
+    image: String,
+    description: String,
+    comments: [
+        {
+            type: mongoose.Schema.Types.ObjectID,
+            ref: "Comment"
+        }
+    ]
+});
+````
+10. Restart the server again and you should get no errors.  Check the url/campgrounds and the database for entries.
+11. Go to app.js and delete all the comment out section that was creating a new campground.
+12. Update the SHOW route so that comments are retrieved too:
    // Show Route - shows more info about one campground
     app.get("/campgrounds/:id", function(req, res){
         // find the campground with the provided ID
