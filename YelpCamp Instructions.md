@@ -995,65 +995,67 @@ var campgroundSchema = new mongoose.Schema({
 10. Restart the server again and you should get no errors.  Check the url/campgrounds and the database for entries.
 11. Go to app.js and delete all the comment out section that was creating a new campground.
 12. Update the SHOW route so that comments are retrieved too:
-   // Show Route - shows more info about one campground
-    app.get("/campgrounds/:id", function(req, res){
-        // find the campground with the provided ID
-        Campground.findById(req.params.id).populate("comments").exec(function(err, foundCampground) {
-           if(err) {
-               console.log(err);
-            } else {
-                console.log(foundCampground);
-                // render show template with that campground
-                res.render("show", {campground: foundCampground});
-            }
-        });
-   });
-                                                                                                                                                   13. Restart the server.  When checking the webpage make sure you start at url/ first, as stated before all campground IDs will have changed and you will need to start from the index page to view without errors.  When you click on More Info your terminal should display the campground including comments.  If you get an error navigate to url/ first and then url/campground/:id
-                                                                                                                                                   14. Open the show.ejs:
-   Goorm views/show.ejs
-                                                                                                                                                   15. Add a loop to display comments and authors above the footer:
-   <% campground.comments.forEach(function(comment){ %>
+````
+// Show Route - shows more info about one campground
+app.get("/campgrounds/:id", function(req, res){
+    // find the campground with the provided ID
+    Campground.findById(req.params.id).populate("comments").exec(function(err, foundCampground) {
+        if(err) {
+            console.log(err);
+        } else {
+            console.log(foundCampground);
+            // render show template with that campground
+            res.render("show", {campground: foundCampground});
+        }
+    });
+});
+````
+13. Restart the server.  When checking the webpage make sure you start at url/ first, as stated before all campground IDs will have changed and you will need to start from the index page to view without errors.  When you click on More Info your terminal should display the campground including comments.  If you get an error navigate to url/ first and then url/campground/:id
+14. Open the show.ejs:
+````Goorm views/show.ejs````
+15. Add a loop to display comments and authors above the footer:
+````
+    <% campground.comments.forEach(function(comment){ %>
         <p><strong><%= comment.author %></strong> - <%= comment.text %></p>
     <% }) %>
-    <%- include("partials/footer") %>
-                                                                                                                                                      16. Restart the server and visit a campground page.
-                                                                                                                                                      17. You should now see a comment by Homer.
+<%- include("partials/footer") %>
+````
+16. Restart the server and visit a campground page.
+17. You should now see a comment by Homer.
 
 
+## Video 12
+### Comment New/Create
+* Discuss nested routes
+* Add the comment new and create routes
+* Add the new comment form
 
-
-Video 12
-##Comment New/Create
-                                                                                                                                                      * Discuss nested routes
-                                                                                                                                                      * Add the comment new and create routes
-                                                                                                                                                      * Add the new comment form
-
-
-                                                                                                                                                      1. Create a new route in the app.js file just above the app.listen:
-   //==========================
-    //Comments Routes
-    //==========================
-
-
-    app.get("/campgrounds/:id/comments/new", function(req, res){
-        res.render("comments/new");
-    });
-                                                                                                                                                         2. Create a couple of new folders in your views directory to handle comments and campgrounds:
-   Mkdir views/campgrounds
-   Mkdir views/comments
-                                                                                                                                                         3. Move the new.ejs, show.ejs and index.ejs into the new views/campgrounds folder
-                                                                                                                                                         4. Create a new.ejs file in the views/comments folder
-                                                                                                                                                         5. Restart the server, you will get an error message when you try to go to view campgrounds, this is because the header and footer partial links in new.ejs, show.ejs and index.ejs are all now incorrect.
-                                                                                                                                                         6. Fix the header and footer partial links in new.ejs, show.ejs and index.ejs:
-   <%- include("../partials/header") %>
-   <%- include("../partials/footer") %>
-                                                                                                                                                         7. Open up the new.ejs in views/comments and add a header stating this is the new comment form.
-                                                                                                                                                         8. Restart the server and everything should be fine
-                                                                                                                                                         9. Navigate to a campground page and then go to the new comment url:
-   url/campgrounds/:id/comments/new
-                                                                                                                                                         10. You should see the header you added.
-                                                                                                                                                         11. Copy the contents of new.ejs from views/campgrounds and paste it in to your new.ejs in views/comments.  Change up some of the details so that it relates to a comment rather than a campground:
-   <%- include("../partials/header") %>
+1. Create a new route in the app.js file just above the app.listen:
+````
+//==========================
+//Comments Routes
+//==========================
+app.get("/campgrounds/:id/comments/new", function(req, res){
+    res.render("comments/new");
+});
+````
+2. Create a couple of new folders in your views directory to handle comments and campgrounds:
+````Mkdir views/campgrounds```` ````Mkdir views/comments````
+3. Move the new.ejs, show.ejs and index.ejs into the new views/campgrounds folder
+4. Create a new.ejs file in the views/comments folder
+5. Restart the server, you will get an error message when you try to go to view campgrounds, this is because the header and footer partial links in new.ejs, show.ejs and index.ejs are all now incorrect.
+6. Fix the header and footer partial links in new.ejs, show.ejs and index.ejs:
+````
+<%- include("../partials/header") %>
+<%- include("../partials/footer") %>
+````
+7. Open up the new.ejs in views/comments and add a header stating this is the new comment form.
+8. Restart the server and everything should be fine
+9. Navigate to a campground page and then go to the new comment url: ````url/campgrounds/:id/comments/new````
+10. You should see the header you added.
+11. Copy the contents of new.ejs from views/campgrounds and paste it in to your new.ejs in views/comments.  Change up some of the details so that it relates to a comment rather than a campground:
+````
+<%- include("../partials/header") %>
     <div class="container">
         <div class="row">
             <h1 style="text-align: center;">
@@ -1072,62 +1074,86 @@ Video 12
                             Submit
                         </button>
                     </div>
-                 </form>
-                 <a href="/campgrounds">Go back</a>
+                </form>
+                <a href="/campgrounds">Go back</a>
             </div>
         </div>
     </div>
-    <%- include("../partials/footer") %>
-                                                                                                                                                            12. Update the new comment route in app.js to send the data required for the new.ejs for comments:
-   app.get("/campgrounds/:id/comments/new", function(req, res){
-        // find campground by id
-        Campground.findById(req.params.id, function(err, campground){
-            if(err) {
-                console.log(err);
-            } else {
-                res.render("comments/new", {campground: campground});        
-            }
-        });
+<%- include("../partials/footer") %>
+````
+12. Update the new comment route in app.js to send the data required for the new.ejs for comments:
+````
+app.get("/campgrounds/:id/comments/new", function(req, res){
+    // find campground by id
+    Campground.findById(req.params.id, function(err, campground){
+        if(err) {
+            console.log(err);
+        } else {
+            res.render("comments/new", {campground: campground});        
+        }
     });
-                                                                                                                                                               13. Now create a POST route for the new comments:
-   app.post("/campgrounds/:id/comments", function(req, res){
-        // lookup campground using id
-        Campground.findById(req.params.id, function(err, campground){
-            if(err){
-                console.log(err);
-                res.redirect(".campgrounds");
-            } else {
-                Comment.create(req.body.comment, function(err, comment){
-                    if(err){
-                        console.log(err);
-                    } else {
-                        campground.comments.push(comment);
-                        campground.save();
-                        res.redirect("/campgrounds/" + campground._id);
-                    }
-                });
-            }
-        });
-        // create new comments
-        // connect new comment to campground
-        // redirect to campground show page
+});
+````
+13. Now create a POST route for the new comments:
+````
+app.post("/campgrounds/:id/comments", function(req, res){
+    // lookup campground using id
+    Campground.findById(req.params.id, function(err, campground){
+        if(err){
+            console.log(err);
+            res.redirect(".campgrounds");
+        } else {
+            Comment.create(req.body.comment, function(err, comment){
+                if(err){
+                    console.log(err);
+                } else {
+                    campground.comments.push(comment);
+                    campground.save();
+                    res.redirect("/campgrounds/" + campground._id);
+                }
+            });
+        }
     });
-                                                                                                                                                                  14. Add a button to the show page to create a new comment:
-   <p>
-        <a class="btn btn-success" href="/campgrounds/<%= campground._id %>/comments/new">Add New Comment</a>
-    </p>
+    // create new comments
+    // connect new comment to campground
+    // redirect to campground show page
+});
+````
+14. Add a button to the show page to create a new comment:
+````
+<p>
+    <a class="btn btn-success" href="/campgrounds/<%= campground._id %>/comments/new">Add New Comment</a>
+</p>
+````
 
 
+## Video 13
+### Style Show Page
+* Add sidebar to show page
+* Display comments nicely
 
-
-Video 13
-##Style Show Page
-                                                                                                                                                                     * Add sidebar to show page
-                                                                                                                                                                     * Display comments nicely
-
-
-                                                                                                                                                                     1. In the show.ejs in views/campgrounds, add a side bar under the partial header:
-   <div class="container">
+1. In the show.ejs in views/campgrounds, add a side bar under the partial header:
+````
+<div class="container">
+    <div class="row">
+        <div class="col-md-3">
+            <p class="lead">
+                YelpCamp
+            </p>
+            <div class="list-group">
+                <li class="list-group-item active">Info 1</li>
+                <li class="list-group-item">Info 2</li>
+                <li class="list-group-item">Info 3</li>
+            </div>
+            //MAP
+        </div>
+    </div>
+</div>
+````
+2. Expand on the side bar to include the main page elements so that show.ejs looks like this:
+````
+<%- include("../partials/header") %>
+    <div class="container">
         <div class="row">
             <div class="col-md-3">
                 <p class="lead">
@@ -1138,345 +1164,372 @@ Video 13
                     <li class="list-group-item">Info 2</li>
                     <li class="list-group-item">Info 3</li>
                 </div>
-            //MAP
+                <!-- Map will go here -->
             </div>
-         </div>
-     </div>
-                                                                                                                                                                        2. Expand on the side bar to include the main page elements so that show.ejs looks like this:
-   <%- include("../partials/header") %>
-        <div class="container">
-                        <div class="row">
-                <div class="col-md-3">
-                    <p class="lead">
-                        YelpCamp
-                    </p>
-                    <div class="list-group">
-                        <li class="list-group-item active">Info 1</li>
-                        <li class="list-group-item">Info 2</li>
-                        <li class="list-group-item">Info 3</li>
+            <div class="col-md-9">
+                <div class="thumbnail">
+                    <img class="image-responsive" src="<%= campground.image %>">
+                    <div class="caption-full">
+                        <h4 class="pull-right">
+                            £9.00/night
+                        </h4>
+                        <h4>
+                            <a><%= campground.name %></a>
+                        </h4>
+                        <p>
+                            <%= campground.description %>
+                        </p>
                     </div>
-                    <!-- Map will go here -->
                 </div>
-                <div class="col-md-9">
-                    <div class="thumbnail">
-                        <img class="image-responsive" src="<%= campground.image %>">
-                            <div class="caption-full">
-                                <h4 class="pull-right">
-                                    £9.00/night
-                                </h4>
-                                <h4>
-                                    <a><%= campground.name %></a>
-                                </h4>
-                                <p>
-                                    <%= campground.description %>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-               </div>
             </div>
-           <p>
-               <a class="btn btn-success" href="/campgrounds/<%= campground._id %>/comments/new">Add New Comment</a>
-            </p>
-
-
+        </div>
+    </div>
+    <p>
+        <a class="btn btn-success" href="/campgrounds/<%= campground._id %>/comments/new">Add New Comment</a>
+    </p>
     <% campground.comments.forEach(function(comment){ %>
         <p><strong><%= comment.author %></strong> - <%= comment.text %></p>
     <% }) %>
-    <%- include("../partials/footer") %>
-                                                                                                                                                                           3. Now add the comments in to the bootstrap elements:
-   <div class="well">
-        <div class="text-right">
-            <a class="btn btn-success" href="/campgrounds/<%= campground._id %>/comments/new">Add New Comment</a>
-        </div>
-        <hr>
-        <% campground.comments.forEach(function(comment){ %>
-            <div class="row">
-                <div class="col-md-12">
-                    <strong><%= comment.author %></strong>
-                    <span class="pull-right">10 days ago</span>
-                    <p>
-                        <%= comment.text %>
-                    </p>
-                </div>
-            </div>
-        <% }) %>
+<%- include("../partials/footer") %>
+````
+3. Now add the comments in to the bootstrap elements:
+````
+<div class="well">
+    <div class="text-right">
+        <a class="btn btn-success" href="/campgrounds/<%= campground._id %>/comments/new">Add New Comment</a>
     </div>
-                                                                                                                                                                              4. Make a public directory, and then make a stylesheets directory and create a file called main.css in there:
-   Mkdir public
-   Mkdir public/stylesheets
-   Touch public/stylesheets/main.css
-                                                                                                                                                                              5. Open main.css:
-   Goorm public/stylesheets/main.css
-                                                                                                                                                                              6. Change the body style to see the css changes on the site:
-   Body {
-       Background-color: purple;
-   }
-                                                                                                                                                                              7. Add the css file to the app.js file:
-   app.use(express.static(__dirname + “/public”);
-                                                                                                                                                                              8. Go to the header.ejs file and add another link to the head tag:
-   <link rel="stylesheet" href="/stylesheets/main.css">
-                                                                                                                                                                              9. Restart the server and you should see a purple background on every page.
-                                                                                                                                                                              10. Swap back to main.css and remove the purple background, and then add a width value to all thumbnail images:
-   .thumbnail img {
-       Width: 100%;
-   }
-                                                                                                                                                                              11. Remove the padding from the thumbnail:
-   .thumbnail {
-       Padding: 0;
-   }
-                                                                                                                                                                              12. Add some padding to the caption:
-   .thumbnail .caption-full {
-       Padding: 9px;
-   }
+    <hr>
+    <% campground.comments.forEach(function(comment){ %>
+        <div class="row">
+            <div class="col-md-12">
+                <strong><%= comment.author %></strong>
+                <span class="pull-right">10 days ago</span>
+                <p>
+                    <%= comment.text %>
+                </p>
+            </div>
+        </div>
+    <% }) %>
+</div>
+````
+4. Make a public directory, and then make a stylesheets directory and create a file called main.css in there:
+````mkdir public```` ````mkdir public/stylesheets```` ````touch public/stylesheets/main.css````
+5. Open main.css:
+````Goorm public/stylesheets/main.css````
+6. Change the body style to see the css changes on the site:
+````
+Body {
+    Background-color: purple;
+}
+````
+7. Add the css file to the app.js file:
+````
+app.use(express.static(__dirname + “/public”);
+````
+8. Go to the header.ejs file and add another link to the head tag:
+````
+<link rel="stylesheet" href="/stylesheets/main.css">
+````
+9. Restart the server and you should see a purple background on every page.
+10. Swap back to main.css and remove the purple background, and then add a width value to all thumbnail images:
+````
+.thumbnail img {
+    width: 100%;
+}
+````
+11. Remove the padding from the thumbnail:
+````
+.thumbnail {
+    padding: 0;
+}
+````
+12. Add some padding to the caption:
+````
+.thumbnail .caption-full {
+    padding: 9px;
+}
+````
 
 
-Video 14
-##Add User Model
-                                                                                                                                                                                 * Install all packages needed for auth
-                                                                                                                                                                                 * Define User model
+## Video 14
+### Add User Model
+* Install all packages needed for auth
+* Define User model
+
+1. Install all the required packages:
+````npm install passport passport-local passport-local-mongoose express-session --save````
+2. Check the package json file:
+````goorm package.json````
+3. Create a user.js file:
+````touch models/user.js````
+4. Create a user schema for mongoose:
+````
+var mongoose = require("mongoose");
+var passportLocalMongoose = require("passport-local-mongoose");
+var UserSchema = new mongoose.Schema({
+    username: String,
+    password: String
+});
+UserSchema.plugin(passportLocalMongoose);
+module.exports = mongoose.model("User", UserSchema);
+````
+5. Add the packages to your app.js file:
+````
+passport = require("passport"),
+LocalStrategy = require("passport-local"),
+User = require("./models/user"),
+````
+6. Restart the server to see if there are any errors
 
 
-                                                                                                                                                                                 1. Install all the required packages:
-   Npm install passport passport-local passport-local-mongoose express-session --save
-                                                                                                                                                                                 2. Check the package json file:
-   Goorm package.json
-                                                                                                                                                                                 3. Create a user.js file:
-    Touch models/user.js
-                                                                                                                                                                                    4. Create a user schema for mongoose:
-   var mongoose = require("mongoose");
-    var passportLocalMongoose = require("passport-local-mongoose");
-    var UserSchema = new mongoose.Schema({
-        username: String,
-        password: String
-    });
-    UserSchema.plugin(passportLocalMongoose);
-    module.exports = mongoose.model("User", UserSchema);
-                                                                                                                                                                                       5. Add the packages to your app.js file:
-   passport         = require("passport"),
-    LocalStrategy = require("passport-local"),
-    User = require("./models/user"),
-                                                                                                                                                                                          6. Restart the server to see if there are any errors
+## Video 15
+### Register
+* Configure Passport
+* Add register routes
+* Add register template
 
-
-Video 15
-##Register
-                                                                                                                                                                                          * Configure Passport
-                                                                                                                                                                                          * Add register routes
-                                                                                                                                                                                          * Add register template
-
-
-                                                                                                                                                                                          1. Open app.js and configure passport:
-   // Passport Config
-    app.use(require("express-session")({
-        secret: "This is my secret",
-        resave: false,
-        saveUninitialized: false
-    }));
-    app.use(passport.initialize());
-    app.use(passport.session());
-    passport.use(new LocalStrategy(User.authenticate()));
-    passport.serializeUser(User.serializeUser());
-    passport.deserializeUser(User.deserializeUser());
-                                                                                                                                                                                             2. Create a register route in your app.js:
-   // show register form
-    app.get("/register", function(req, res){
-        res.render("register");
-    });
-                                                                                                                                                                                                3. Create register.ejs in the views directory:
-   Touch views/register.ejs
-                                                                                                                                                                                                4. Open up register.ejs and create some content to see if the route works:
-   Goorm views/register.ejs
-    <h1>
-       Sign Up!
-   </h1>
-                                                                                                                                                                                                   5. Restart the server and check the register page:
-   url/register
-                                                                                                                                                                                                   6. This should display Sign Up!
-                                                                                                                                                                                                   7. Create a form in the register.ejs:
-   <form action="/register" method="post">
-        <input type="text" name="username" placeholder="username">
-        <input type="password" name="password" placeholder="password">
-        <button>
-            Sign Up
-        </button>
-    </form>
-                                                                                                                                                                                                      8. Create a post route for register in app.js:
-   //handle sign up logic
-    app.post("/register", function(req, res){
-        var newUser = new User({username: req.body.username});
-        User.register(newUser, req.body.password, function(err, user){
-            if(err){
-                console.log(err);
-                return res.render("register");
-            }
-            passport.authenticate("local")(req, res, function(){
+1. Open app.js and configure passport:
+````
+// Passport Config
+app.use(require("express-session")({
+    secret: "This is my secret",
+    resave: false,
+    saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+````
+2. Create a register route in your app.js:
+````
+// show register form
+app.get("/register", function(req, res){
+    res.render("register");
+});
+````
+3. Create register.ejs in the views directory:
+````touch views/register.ejs````
+4. Open up register.ejs and create some content to see if the route works:
+````goorm views/register.ejs````
+````
+<h1>
+    Sign Up!
+</h1>
+````
+5. Restart the server and check the register page:
+````url/register````
+6. This should display Sign Up!
+7. Create a form in the register.ejs:
+````
+<form action="/register" method="post">
+    <input type="text" name="username" placeholder="username">
+    <input type="password" name="password" placeholder="password">
+    <button>
+        Sign Up
+    </button>
+</form>
+````
+8. Create a post route for register in app.js:
+````
+//handle sign up logic
+app.post("/register", function(req, res){
+    var newUser = new User({username: req.body.username});
+    User.register(newUser, req.body.password, function(err, user){
+        if(err){
+            console.log(err);
+            return res.render("register");
+        }
+        passport.authenticate("local")(req, res, function(){
             res.redirect("/campgrounds");
-            });
         });
     });
-                                                                                                                                                                                                         9. Restart the server and navigate to url/register
-                                                                                                                                                                                                         10. Create a new account.  If it works you will be redirected back to the campgrounds page, other wise the sign up page will be displayed again.
-                                                                                                                                                                                                         11. You can see if it works by opening up a new terminal window and looking in the mongo database for the account you created:
-   Mongo
-   Use yelp_camp
-                db.users.find()
-                                                                                                                                                                                                            12. A user should be displayed with an incredibly large object that is the password.
+});
+````
+9. Restart the server and navigate to url/register
+10. Create a new account.  If it works you will be redirected back to the campgrounds page, other wise the sign up page will be displayed again.
+11. You can see if it works by opening up a new terminal window and looking in the mongo database for the account you created:
+````mongo```` ````use yelp_camp```` ````db.users.find()````
+12. A user should be displayed with an incredibly large object that is the password.
 
 
-Video 16
-##Login
-                                                                                                                                                                                                            * Add login routes
-                                                                                                                                                                                                            * Add login template
+## Video 16
+### Login
+* Add login routes
+* Add login template
 
-
-                                                                                                                                                                                                            1. Create the login route in app.js:
+1. Create the login route in app.js:
+````
 // Login routes
 // show login form
-    app.get("/login", function(req, res){
-        res.render("login");
-    });
-                                                                                                                                                                                                               2. Create a login.ejs file and open it:
-   Touch views/login.ejs
-   Goorm views/login.ejs
-                                                                                                                                                                                                               3. Put some content in and then restart the server and check it renders:
-   <h1>
-       Login!
-   </h1>
-   url/login
-                                                                                                                                                                                                               4. Create a login form:
-    <form action="/login" method="POST">
-        <input type="text" name="username" placeholder="username">
-        <input type="password" name="password" placeholder="password">
-        <input type="submit" value="Login!">
-    </form>
-                                                                                                                                                                                                                  5. Restart the server and refresh the login page to see the form.  Try logging in, it will error as we don’t have a route set up.
-                                                                                                                                                                                                                  6. Update the route in app.js:
-    // handle login logic
-    app.post("/login", function(req, res){
-        res.send("Login Logic");
-    });
-                                                                                                                                                                                                                  7. Restart the server and try logging in with any credentials to see the Login Logic message
-                                                                                                                                                                                                                  8. Insert middleware in to the login route:
-    app.post("/login", passport.authenticate("local", {
+app.get("/login", function(req, res){
+    res.render("login");
+});
+````
+2. Create a login.ejs file and open it:
+````touch views/login.ejs```` ````goorm views/login.ejs````
+3. Put some content in and then restart the server and check it renders:
+````
+<h1>
+    Login!
+</h1>
+````
+````url/login````
+4. Create a login form:
+````
+<form action="/login" method="POST">
+    <input type="text" name="username" placeholder="username">
+    <input type="password" name="password" placeholder="password">
+    <input type="submit" value="Login!">
+</form>
+````
+5. Restart the server and refresh the login page to see the form.  Try logging in, it will error as we don’t have a route set up.
+6. Update the route in app.js:
+````
+// handle login logic
+app.post("/login", function(req, res){
+    res.send("Login Logic");
+});
+````
+7. Restart the server and try logging in with any credentials to see the Login Logic message
+8. Insert middleware in to the login route:
+````
+app.post("/login", passport.authenticate("local", {
         successRedirect: "/campgrounds",
         failureRedirect: "/login"
     }), function(req, res){
-    });
-                                                                                                                                                                                                                  9. Restart the server and login using correct details, this should take you to campgrounds.  And if you login with incorrect details, it should refresh the login page.
+});
+````
+9. Restart the server and login using correct details, this should take you to campgrounds.  And if you login with incorrect details, it should refresh the login page.
 
 
-Video 17
-##Logout / Navbar
-                                                                                                                                                                                                                  * Add logout route
-                                                                                                                                                                                                                  * Prevent user from adding a comment if not signed in
-                                                                                                                                                                                                                  * Add links to navbar
-                                                                                                                                                                                                                  * Show/hide auth links correctly
+## Video 17
+### Logout / Navbar
+* Add logout route
+* Prevent user from adding a comment if not signed in
+* Add links to navbar
+* Show/hide auth links correctly
 
-
-                                                                                                                                                                                                                  1. Add a logout route:
-   // Logout routes
-    app.get("/logout", function(req, res){
-        req.logout();
-        res.redirect("/campgrounds");
-    });
-                                                                                                                                                                                                                     2. Open the header.ejs file and fix the navbar links:
-   <li><a href="/login">Login</a></li>
-    <li><a href="/register">Sign Up</a></li>
-    <li><a href="/logout">Logout</a></li>
-                                                                                                                                                                                                                        3. Add the header and footer partials to the login.ejs and register.ejs:
-    <%- include("./partials/header") %>
-   <%- include("./partials/footer") %>
-                                                                                                                                                                                                                        4. In app.js write a logged in checker function:
-   function isLoggedIn(req, res, next){
-        if(req.isAuthenticated()){
-            return next();
+1. Add a logout route:
+````
+// Logout routes
+app.get("/logout", function(req, res){
+    req.logout();
+    res.redirect("/campgrounds");
+});
+````
+2. Open the header.ejs file and fix the navbar links:
+````
+<li><a href="/login">Login</a></li>
+<li><a href="/register">Sign Up</a></li>
+<li><a href="/logout">Logout</a></li>
+````
+3. Add the header and footer partials to the login.ejs and register.ejs:
+````
+<%- include("./partials/header") %>
+<%- include("./partials/footer") %>
+````
+4. In app.js write a logged in checker function:
+````
+function isLoggedIn(req, res, next){
+    if(req.isAuthenticated()){
+        return next();
+    }
+    res.redirect("/login");
+};
+````
+5. Add this function in to the create new comment route as a middleware:
+````
+app.get("/campgrounds/:id/comments/new", isLoggedIn, function(req, res){
+    // find campground by id
+    Campground.findById(req.params.id, function(err, campground){
+        if(err) {
+            console.log(err);
+        } else {
+            res.render("comments/new", {campground: campground});
         }
-        res.redirect("/login");
-    };
-                                                                                                                                                                                                                           5. Add this function in to the create new comment route as a middleware:
-   app.get("/campgrounds/:id/comments/new", isLoggedIn, function(req, res){
-        // find campground by id
-        Campground.findById(req.params.id, function(err, campground){
-            if(err) {
-                console.log(err);
-            } else {
-                res.render("comments/new", {campground: campground});
-            }
-        });
     });
-                                                                                                                                                                                                                              6. Add middleware to the show comments route too:
-   app.post("/campgrounds/:id/comments", isLoggedIn, function(req, res){
-        // lookup campground using id
-        Campground.findById(req.params.id, function(err, campground){
-            if(err){
-                console.log(err);
-                res.redirect(".campgrounds");
-            } else {
-                Comment.create(req.body.comment, function(err, comment){
-                    if(err){
-                        console.log(err);
-                    } else {
-                        campground.comments.push(comment);
-                        campground.save();
-                        res.redirect("/campgrounds/" + campground._id);
-                    }
-                });
-            }
-        });
+});
+````
+6. Add middleware to the show comments route too:
+````
+app.post("/campgrounds/:id/comments", isLoggedIn, function(req, res){
+    // lookup campground using id
+    Campground.findById(req.params.id, function(err, campground){
+        if(err){
+            console.log(err);
+            res.redirect(".campgrounds");
+        } else {
+            Comment.create(req.body.comment, function(err, comment){
+                if(err){
+                    console.log(err);
+                } else {
+                    campground.comments.push(comment);
+                    campground.save();
+                    res.redirect("/campgrounds/" + campground._id);
+                }
+            });
+        }
     });
+});
+````
 
 
-Video 18
-## Show/Hide Links
-                                                                                                                                                                                                                                 * Show/Hide auth links in navbar correctly
+## Video 18
+### Show/Hide Links
+* Show/Hide auth links in navbar correctly
 
-
-                                                                                                                                                                                                                                 1. In app.js add the following app.use before the routes:
-   app.use(function(req, res, next){
-        res.locals.currentUser = req.user;
-        next();
-    });
-                                                                                                                                                                                                                                    2. In header.ejs add a conditional statement to check if a user is logged in:
-   <ul class="nav navbar-nav navbar-right">
-        <!-- if no user -->
-        <% if(!currentUser){ %>
-            <li><a href="/login">Login</a></li>
-            <li><a href="/register">Sign Up</a></li>
-        <!-- else -->        
-        <% } else { %>
-            <li><a href="/logout">Logout</a></li>
-        <% } %>
-    </ul>
-                                                                                                                                                                                                                                       3. Restart the server, pages should only show Logout if a user is logged in, and Login/SignUp if a user is not logged in.
-                                                                                                                                                                                                                                       4. Above the Logout link add a line to display the user:
+1. In app.js add the following app.use before the routes:
+````
+app.use(function(req, res, next){
+    res.locals.currentUser = req.user;
+    next();
+});
+````
+2. In header.ejs add a conditional statement to check if a user is logged in:
+````
+<ul class="nav navbar-nav navbar-right">
+    <!-- if no user -->
+    <% if(!currentUser){ %>
+        <li><a href="/login">Login</a></li>
+        <li><a href="/register">Sign Up</a></li>
+    <!-- else -->        
+    <% } else { %>
+        <li><a href="/logout">Logout</a></li>
+    <% } %>
+</ul>
+````
+3. Restart the server, pages should only show Logout if a user is logged in, and Login/SignUp if a user is not logged in.
+4. Above the Logout link add a line to display the user:
+````
 <li><a href='#'>Signed in as <%= currentUser.username %></a></li>
-	Video 19
-## Refactor the Routes
-                                                                                                                                                                                                                                       * Use Express router to reorganise all routes
+````
 
 
-                                                                                                                                                                                                                                       1. Create a new folder called routes:
-    Mkdir routes
-                                                                                                                                                                                                                                       2. Create a comments.js, campgrounds.js and index.js files in routes:
-   Goorm routes/comments.js routes/campgrounds.js routes/index.js
-                                                                                                                                                                                                                                       3. Open these files
-                                                                                                                                                                                                                                       4. Copy and paste the following from app.js in to each file below:
-    Campgrounds.js:
+## Video 19
+### Refactor the Routes
+* Use Express router to reorganise all routes
+
+1. Create a new folder called routes:
+````Mkdir routes````
+2. Create a comments.js, campgrounds.js and index.js files in routes:
+````Goorm routes/comments.js routes/campgrounds.js routes/index.js````
+3. Open these files
+4. Copy and paste the following from app.js in to each file below:
+Campgrounds.js:
+````
 // Index Route - shows all campgrounds
 app.get("/campgrounds", function(req, res){
     // Get all campgrounds from DB
-   Campground.find({}, function(err, allCampgrounds){
-       if(err){
-      console.log(err);
-  } else {
-            res.render("campgrounds/index",{campgrounds:
-allCampgrounds, currentUser: req.user});
-  }
+    Campground.find({}, function(err, allCampgrounds){
+        if(err){
+            console.log(err);
+        } else {
+            res.render("campgrounds/index",{campgrounds:allCampgrounds, currentUser: req.user});
+        }
     });
 });
-
-
 // Create Route - Add new campground to database
 app.post("/campgrounds", function(req, res){
     // get data from form and add to campgrounds array
@@ -1493,19 +1546,14 @@ app.post("/campgrounds", function(req, res){
         }
     });
 });
-
-
 // New Route - show form to create new campground
 app.get("/campgrounds/new", function(req, res){
     res.render("campgrounds/new");
 });
-
-
 // Show Route - shows more info about one campground
 app.get("/campgrounds/:id", function(req, res){
     // find the campground with the provided ID
-    Campground.findById(req.params.id).populate("comments")
-.exec(function(err, foundCampground) {
+    Campground.findById(req.params.id).populate("comments").exec(function(err, foundCampground) {
         if(err) {
             console.log(err);
         } else {
@@ -1515,221 +1563,225 @@ app.get("/campgrounds/:id", function(req, res){
         }
     });
 });
-	
-
-    // Index Route - shows all campgrounds
-    app.get("/campgrounds", function(req, res) {
-        // Get all campgrounds from DB
-       Campground.find({}, function(err, allCampgrounds){
-           if(err){
-                console.log(err);
-            } else {
-                res.render("campgrounds/index", {campgrounds: allCampgrounds, currentUser: req.user});        
-            }
-        });
-    });
-
-
-    // Create Route - Add new campground to database
-    app.post("/campgrounds", function(req, res){
-        // get data from form and add to campgrounds array
-        var name = req.body.name;
-        var image = req.body.image;
-        var desc = req.body.description;
-        var newCampground = {name: name, image: image, description: desc};
-        // Create a new campground and save to DB
-        Campground.create(newCampground, function(err, newlyCreated){
-            if(err) {
-                console.log(err)
-            } else {
-                res.redirect("/campgrounds");
-            }
-        });
-    });
-
-
-    // New Route - show form to create new campground
-    app.get("/campgrounds/new", function(req, res){
-        res.render("campgrounds/new");
-    });
-
-
-    // Show Route - shows more info about one campground
-    app.get("/campgrounds/:id", function(req, res){
-        // find the campground with the provided ID
-        Campground.findById(req.params.id).populate("comments").exec(function(err, foundCampground) {
-            if(err) {
-                console.log(err);
-            } else {
-                console.log(foundCampground);
-                // render show template with that campground
-                res.render("campgrounds/show", {campground: foundCampground});
-            }
-        });
-    });
-
-
-Comments.js:
-    //==========================
-    //Comments Routes
-    //==========================
-    app.get("/campgrounds/:id/comments/new", isLoggedIn, function(req, res){
-        // find campground by id
-        Campground.findById(req.params.id, function(err, campground){
-            if(err) {
-                console.log(err);
-            } else {
-                res.render("comments/new", {campground: campground});
-            }
-        });
-    });
-
-
-    app.post("/campgrounds/:id/comments", isLoggedIn, function(req, res){
-        // lookup campground using id
-        Campground.findById(req.params.id, function(err, campground){
-            if(err){
-                console.log(err);
-                res.redirect(".campgrounds");
+// Index Route - shows all campgrounds
+app.get("/campgrounds", function(req, res) {
+    // Get all campgrounds from DB
+    Campground.find({}, function(err, allCampgrounds){
+        if(err){
+            console.log(err);
         } else {
-                Comment.create(req.body.comment, function(err, comment){
-                    if(err){
-                        console.log(err);
-                    } else {
-                        campground.comments.push(comment);
-                        campground.save();
-                        res.redirect("/campgrounds/" + campground._id);
-                    }
-                });
-            }
-        });
+            res.render("campgrounds/index", {campgrounds: allCampgrounds, currentUser: req.user});        
+        }
+    });
+});
+// Create Route - Add new campground to database
+app.post("/campgrounds", function(req, res){
+    // get data from form and add to campgrounds array
+    var name = req.body.name;
+    var image = req.body.image;
+    var desc = req.body.description;
+    var newCampground = {name: name, image: image, description: desc};
+    // Create a new campground and save to DB
+    Campground.create(newCampground, function(err, newlyCreated){
+        if(err) {
+            console.log(err)
+        } else {
+            res.redirect("/campgrounds");
+        }
+    });
+});
+// New Route - show form to create new campground
+app.get("/campgrounds/new", function(req, res){
+    res.render("campgrounds/new");
+});
+// Show Route - shows more info about one campground
+app.get("/campgrounds/:id", function(req, res){
+    // find the campground with the provided ID
+    Campground.findById(req.params.id).populate("comments").exec(function(err, foundCampground) {
+        if(err) {
+            console.log(err);
+        } else {
+            console.log(foundCampground);
+            // render show template with that campground
+            res.render("campgrounds/show", {campground: foundCampground});
+        }
+    });
+});
+````
+Comments.js:
+````
+//==========================
+//Comments Routes
+//==========================
+app.get("/campgrounds/:id/comments/new", isLoggedIn, function(req, res){
+    // find campground by id
+    Campground.findById(req.params.id, function(err, campground){
+        if(err) {
+            console.log(err);
+        } else {
+            res.render("comments/new", {campground: campground});
+        }
+    });
+});
+app.post("/campgrounds/:id/comments", isLoggedIn, function(req, res){
+    // lookup campground using id
+    Campground.findById(req.params.id, function(err, campground){
+        if(err){
+            console.log(err);
+            res.redirect(".campgrounds");
+        } else {
+            Comment.create(req.body.comment, function(err, comment){
+                if(err){
+                    console.log(err);
+                } else {
+                    campground.comments.push(comment);
+                    campground.save();
+                    res.redirect("/campgrounds/" + campground._id);
+                }
+            });
+        }
+    });
     // create new comments
     // connect new comment to campground
     // redirect to campground show page
-    });
-
-
+});
+````
 Index.js:
-    app.get("/", function(req, res) {
-        res.render("landing");
-    });
-
-
-    // ===========
-    // Auth routes
-    // ===========
-
-
-    // show register form
-    app.get("/register", function(req, res){
-        res.render("register");
-    });
-
-
-    //handle sign up logic
-    app.post("/register", function(req, res){
-        var newUser = new User({username: req.body.username});
-        User.register(newUser, req.body.password, function(err, user){
-            if(err){
-                console.log(err);
-                return res.render("register");
-            }
-            passport.authenticate("local")(req, res, function(){
+````
+app.get("/", function(req, res) {
+    res.render("landing");
+});
+// ===========
+// Auth routes
+// ===========
+// show register form
+app.get("/register", function(req, res){
+    res.render("register");
+});
+//handle sign up logic
+app.post("/register", function(req, res){
+    var newUser = new User({username: req.body.username});
+    User.register(newUser, req.body.password, function(err, user){
+        if(err){
+            console.log(err);
+            return res.render("register");
+        }
+        passport.authenticate("local")(req, res, function(){
             res.redirect("/campgrounds");
-            });
         });
     });
-
-
-    // Login routes
-    // show login form
-    app.get("/login", function(req, res){
-        res.render("login");
-    });
-
-
-    // handle login logic
-    app.post("/login", passport.authenticate("local", {
-        successRedirect: "/campgrounds",
-        failureRedirect: "/login"
+});
+// Login routes
+// show login form
+app.get("/login", function(req, res){
+    res.render("login");
+});
+// handle login logic
+app.post("/login", passport.authenticate("local", {
+    successRedirect: "/campgrounds",
+    failureRedirect: "/login"
     }), function(req, res){
-    });
+});
+// Logout routes
+app.get("/logout", function(req, res){
+    req.logout();
+    res.redirect("/campgrounds");
+});
 
-
-    // Logout routes
-    app.get("/logout", function(req, res){
-        req.logout();
-        res.redirect("/campgrounds");
-    });
-
-
-    function isLoggedIn(req, res, next){
-        if(req.isAuthenticated()){
-            return next();
-        }
-        res.redirect("/login");
-    };
-                                                                                                                                                                                                                                          5. Add requires to each file created:
+function isLoggedIn(req, res, next){
+    if(req.isAuthenticated()){
+        return next();
+    }
+    res.redirect("/login");
+};
+````
+5. Add requires to each file created:
 campground.js:
-const Campground         = require("../models/campground"),
-      express         = require("express"),
-      router         = express.Router();
+````
+const Campground = require("../models/campground"),
+    express      = require("express"),
+    router       = express.Router();
+````
 Comments.js:
-const Campground         = require("../models/campground"),
-        Comment        = require("../models/comment"),
-        express         = require("express"),
-        router         = express.Router({mergeParams: true});
+````
+const Campground = require("../models/campground"),
+    Comment      = require("../models/comment"),
+    express      = require("express"),
+    router       = express.Router({mergeParams: true});
+````
 Index.js:
-const Campground         = require("../models/campground"),
-        passport        = require("passport"),
-        Comment        = require("../models/comment"),
-        express         = require("express"),
-        router         = express.Router(),
-        User                = require("../models/user");
-                                                                                                                                                                                                                                             6. Replace all app.get/app.post with router.get/router.post in each file
-                                                                                                                                                                                                                                             7. Add module.exports = router; to the end of each file
-                                                                                                                                                                                                                                             8. In app.js add the following lines under the existing const:
-const campgroundRoutes         = require("./routes/campgrounds"),
-        commentRoutes         = require("./routes/comments"),          
-        authRoutes                 = require("./routes/index");
+````
+const Campground = require("../models/campground"),
+    passport     = require("passport"),
+    Comment      = require("../models/comment"),
+    express      = require("express"),
+    router       = express.Router(),
+    User         = require("../models/user");
+````
+6. Replace:
+````
+app.get/app.post
+````
+with 
+````
+router.get/router.post
+````
+in each file
+7. Add:
+````
+module.exports = router;
+````
+to the end of each file
+8. In app.js add the following lines under the existing const:
+````
+const campgroundRoutes = require("./routes/campgrounds"),
+    commentRoutes      = require("./routes/comments"),          
+    authRoutes         = require("./routes/index");
+````
+9. And then add the following just above the app.listen method:
+````
+app.use("/", authRoutes);
+app.use("/campgrounds/:id/comments", commentRoutes);
+app.use("/campgrounds", campgroundRoutes);
+````
+10. In comments.js you can now remove “/campgrounds/:id/comments” from each of the routes:
+````
+router.get("/new", isLoggedIn, function(req, res){...
+router.post("/", isLoggedIn, function(req, res){...
+````
+11. And in campgrounds.js you can remove “/campgrounds” from all routes:
+````
+router.get("/", function(req, res) {...
+router.post("/", function(req, res){...
+router.get("/new", function(req, res){...
+router.get("/:id", function(req, res){...
+````
+12. The website should still function once the server has been restarted.
 
 
-                                                                                                                                                                                                                                             9. And then add the following just above the app.listen method:
-    app.use("/", authRoutes);
-    app.use("/campgrounds/:id/comments", commentRoutes);
-    app.use("/campgrounds", campgroundRoutes);
-                                                                                                                                                                                                                                                10. In comments.js you can now remove “/campgrounds/:id/comments” from each of the routes:
-    router.get("/new", isLoggedIn, function(req, res){...
-   router.post("/", isLoggedIn, function(req, res){...
-                                                                                                                                                                                                                                                11. And in campgrounds.js you can remove “/campgrounds” from all routes:
-    router.get("/", function(req, res) {...
-   router.post("/", function(req, res){...
-   router.get("/new", function(req, res){...
-   router.get("/:id", function(req, res){...
-                                                                                                                                                                                                                                                12. The website should still function once the server has been restarted.
+## Video 20
+### Comments
+* Associate users and comments
+* Save author’s name to a comment automatically
 
-
-Video 20
-##Comments
-                                                                                                                                                                                                                                                   * Associate users and comments
-                                                                                                                                                                                                                                                   * Save author’s name to a comment automatically
-
-
-                                                                                                                                                                                                                                                   1. Open up comment.js and remove String from author and replace with an object:
+1. Open up comment.js and remove String from author and replace with an object:
+````
 var commentSchema = mongoose.Schema({
     text: String,
     author: {
         Id: {
             Type: mongoose.Schema.Types.ObjectId,
-                    Ref: “User”
-                   },
+            Ref: “User”
+        },
         Username: String
     }
 });
-                                                                                                                                                                                                                                                      2. Open up the seeds.js and comment out every line within the function. Restart the server.  This will have cleared all campgrounds.
-                                                                                                                                                                                                                                                      3. Uncomment all the lines and save.
-                                                                                                                                                                                                                                                      4. Open up app.js and comment out the line that calls the seedDB function.
-                                                                                                                                                                                                                                                      5. Open up comment.js in the routes directory and add the user id and username to the comment creation:
+````
+2. Open up the seeds.js and comment out every line within the function. Restart the server.  This will have cleared all campgrounds.
+3. Uncomment all the lines and save.
+4. Open up app.js and comment out the line that calls the seedDB function.
+5. Open up comment.js in the routes directory and add the user id and username to the comment creation:
+````
 Comment.create(req.body.comment, function(err, comment){
     if(err){
         console.log(err);
@@ -1745,8 +1797,10 @@ Comment.create(req.body.comment, function(err, comment){
         res.redirect("/campgrounds/" + campground._id);
     }
 });
-                                                                                                                                                                                                                                                         6. Open up new.ejs in views/comments and delete the author input field.
-                                                                                                                                                                                                                                                         7. Open up show.ejs in views/campgrounds and update the author field to include the username:
+````
+6. Open up new.ejs in views/comments and delete the author input field.
+7. Open up show.ejs in views/campgrounds and update the author field to include the username:
+````
 <div class="col-md-12">
     <strong><%= comment.author.username %></strong>
     <span class="pull-right">10 days ago</span>
@@ -1754,80 +1808,96 @@ Comment.create(req.body.comment, function(err, comment){
         <%= comment.text %>
     </p>
 </div>
-                                                                                                                                                                                                                                                            8. Now when you restart the server and make a comment on a campground it will display the user name you logged in with in the comment.
+````
+8. Now when you restart the server and make a comment on a campground it will display the user name you logged in with in the comment.
 
 
-Video 21
-## Users and campgrounds
-                                                                                                                                                                                                                                                            * Prevent unauthenticated user from creating a campground
-                                                                                                                                                                                                                                                            * Save username+id to the newly created campground
+## Video 21
+### Users and campgrounds
+* Prevent unauthenticated user from creating a campground
+* Save username+id to the newly created campground
 
-
-                                                                                                                                                                                                                                                            1. Open campgrounds.js from the routes folder and add the isLoggedIn middleware:
+1. Open campgrounds.js from the routes folder and add the isLoggedIn middleware:
+````
 function isLoggedIn(req, res, next){
     if(req.isAuthenticated()){
         return next();
     }
     res.redirect("/login");
 };
-                                                                                                                                                                                                                                                               2. Add the call to the middleware to the new route and the create route:
-   router.get("/new", isLoggedIn, function(req, res){...
-   router.post("/", isLoggedIn, function(req, res){
-                                                                                                                                                                                                                                                               3. Open up campground.js in models and add the author details:
-   var campgroundSchema = new mongoose.Schema({
-        name: String,
-        image: String,
-        description: String,
-        author: {
-            id: {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: "User"
-            },
-            username: String
+````
+2. Add the call to the middleware to the new route and the create route:
+````
+router.get("/new", isLoggedIn, function(req, res){...
+router.post("/", isLoggedIn, function(req, res){...
+````
+3. Open up campground.js in models and add the author details:
+````
+var campgroundSchema = new mongoose.Schema({
+    name: String,
+    image: String,
+    description: String,
+    author: {
+        id: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User"
         },
-        comments: [
-            {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: "Comment"
-            }
-        ]
-    });
-                                                                                                                                                                                                                                                                  4. Open campgrounds.js in routes and create an author object:
-   var author = {
+        username: String
+    },
+    comments: [
+        {
+	    type: mongoose.Schema.Types.ObjectId,
+            ref: "Comment"
+        }
+    ]
+});
+````
+4. Open campgrounds.js in routes and create an author object:
+````
+var author = {
         id: req.user._id,
         username: req.user.username
     };
-                                                                                                                                                                                                                                                                     5. Pass author into the newCampground object:
-   var newCampground = {name: name, image: image, description: desc, author: author};
-                                                                                                                                                                                                                                                                     6. Open show.ejs within views/campgrounds and update to display the author details under the description:
-   <p>
-        <em>Submitted by <%= campground.author.username %></em>
-    </p>
-                                                                                                                                                                                                                                                                        7. Restart the server
+````
+5. Pass author into the newCampground object:
+````
+var newCampground = {name: name, image: image, description: desc, author: author};
+````
+6. Open show.ejs within views/campgrounds and update to display the author details under the description:
+````
+<p>
+    <em>Submitted by <%= campground.author.username %></em>
+</p>
+````
+7. Restart the server
 
 
-Video 22
-##Editing Campground
-                                                                                                                                                                                                                                                                        * Add Method-Override
-                                                                                                                                                                                                                                                                        * Add Edit Route for Campgrounds
-                                                                                                                                                                                                                                                                        * Add Link to Edit Page
-                                                                                                                                                                                                                                                                        * Add Update Route
-                                                                                                                                                                                                                                                                        * Fix $set problem
+## Video 22
+### Editing Campground
+* Add Method-Override
+* Add Edit Route for Campgrounds
+* Add Link to Edit Page
+* Add Update Route
+* Fix $set problem
 
-
-                                                                                                                                                                                                                                                                        1. Install method-override:
-   Npm install method-override --save
-                                                                                                                                                                                                                                                                        2. Require method-override in app.js:
-   methodoverride         = require("method-override"),
-            app.use(methodoverride("_method"));
-                                                                                                                                                                                                                                                                           3. In campgrounds.js within routes/ create an Edit route:
-   router.get(“/:id/edit”, function(req, res){
-       res.render(“campgrounds/edit”);
-   });
-                                                                                                                                                                                                                                                                           4. Create edit.ejs:
-   Touch views/campgrounds/edit.ejs
-                                                                                                                                                                                                                                                                           5. Add some content, restart the server and go to url/campgrounds/:id/edit and see if your content is displayed.
-                                                                                                                                                                                                                                                                           6. In campground.ejs in the routes folder update the Edit route to pass the campground id:
+1. Install method-override:
+````npm install method-override --save````
+2. Require method-override in app.js:
+````
+methodoverride = require("method-override"),
+app.use(methodoverride("_method"));
+````
+3. In campgrounds.js within routes/ create an Edit route:
+````
+router.get(“/:id/edit”, function(req, res){
+    res.render(“campgrounds/edit”);
+});
+````
+4. Create edit.ejs:
+````touch views/campgrounds/edit.ejs````
+5. Add some content, restart the server and go to url/campgrounds/:id/edit and see if your content is displayed.
+6. In campground.ejs in the routes folder update the Edit route to pass the campground id:
+````
 router.get("/:id/edit", function(req, res){
     Campground.findById(req.params.id, function(err, foundCampground){
         if(err){
@@ -1837,26 +1907,34 @@ router.get("/:id/edit", function(req, res){
         }
     });        
 });
-                                                                                                                                                                                                                                                                              7. Then, in edit.js within views/campgrounds copy the form from views/campgrounds/new.ejs and paste it in, and then change the <form action=””> field:
-   <form action="/campgrounds/<%= campground._id %>?_method=PUT" method="POST">
-                                                                                                                                                                                                                                                                              8. Change the title to Edit Campground:
+````
+7. Then, in edit.js within views/campgrounds copy the form from views/campgrounds/new.ejs and paste it in, and then change the <form action=” ”> field:
+````
+<form action="/campgrounds/<%= campground._id %>?_method=PUT" method="POST">
+````
+8. Change the title to Edit Campground:
+````
 <h1 style="text-align: center;">
     Edit <%= campground.name %>
 </h1>
-                                                                                                                                                                                                                                                                                 9. Restart the server and go to the edit page for a campground:
-   url/campgrounds/:id/edit
-                                                                                                                                                                                                                                                                                 10. This should display the edit form.
-                                                                                                                                                                                                                                                                                 11. Update the edit.ejs and change placeholder to value and its value:
+````
+9. Restart the server and go to the edit page for a campground:
+````url/campgrounds/:id/edit````
+10. This should display the edit form.
+11. Update the edit.ejs and change placeholder to value and its value:
+````
 <div class="form-group">
     <input class="form-control" type="text" name="campground[name]" value="<%= campground.name %>">        
- </div>
+</div>
 <div class="form-group">
     <input class="form-control" type="text" name="campground[image]" value="<%= campground.image %>">
 </div>
 <div class="form-group">
     <input class="form-control" type="text" name="campground[description]" value="<%= campground.description %>">
 </div>
-                                                                                                                                                                                                                                                                                    12. Update the Update Route in campgrounds.ejs in the routes folder:
+````
+12. Update the Update Route in campgrounds.ejs in the routes folder:
+````
 // Update Route
 router.put("/:id", function(req, res){
     // find and update the correct campground
@@ -1869,29 +1947,36 @@ router.put("/:id", function(req, res){
         }
     });
 });
-                                                                                                                                                                                                                                                                                       13. And in the show.ejs found in views/campgrounds add a button to take you to the edit page and place it under the Submitted by field:
+````
+13. And in the show.ejs found in views/campgrounds add a button to take you to the edit page and place it under the Submitted by field:
+````
 <a class="btn btn-warning" href="/campgrounds/<%= campground._id %>/edit">Edit</a>
+````
 
 
-Video 23
-##Deleting Campgrounds
-                                                                                                                                                                                                                                                                                          * Add Destroy Route
-                                                                                                                                                                                                                                                                                          * Add Delete Button
+## Video 23
+### Deleting Campgrounds
+* Add Destroy Route
+* Add Delete Button
 
-
-                                                                                                                                                                                                                                                                                          1. Open campgrounds.js in the routes directory and add a Destroy route:
+1. Open campgrounds.js in the routes directory and add a Destroy route:
+````
 //Destroy route
 router.delete(“/:id”, function(req, res){
    res.send(“You are trying to delete a campground”);
 });
-                                                                                                                                                                                                                                                                                          2. In views/campgrounds directory open the show.ejs file and add a delete button under the edit button:
+````
+2. In views/campgrounds directory open the show.ejs file and add a delete button under the edit button:
+````
 <a class="btn btn-warning" href="/campgrounds/<%= campground._id %>/edit">Edit</a>
 <form action="/campgrounds/<%= campground._id %>?_method=DELETE" method="POST">
     <button class="btn btn-danger">
         Delete
     </button>
 </form>
-                                                                                                                                                                                                                                                                                             3. Back in campgrounds.js in the routes directory rework the delete route:
+````
+3. Back in campgrounds.js in the routes directory rework the delete route:
+````
 router.delete("/:id", function(req, res){
     Campground.findByIdAndRemove(req.params.id, function(err){
         if(err){
@@ -1901,27 +1986,32 @@ router.delete("/:id", function(req, res){
         }
     });
 });
-                                                                                                                                                                                                                                                                                                4. Restart the server and delete a campground, it should actually be deleted now.
-                                                                                                                                                                                                                                                                                                5. Back in the show.ejs file add an id to the form for the delete button:
+````
+4. Restart the server and delete a campground, it should actually be deleted now.
+5. Back in the show.ejs file add an id to the form for the delete button:
+````
 <form id="delete-form" action="/campgrounds/<%= campground._id %>?_method=DELETE" method="POST">
-                                                                                                                                                                                                                                                                                                6. Open up the main.css file in url/public/stylesheets/main.css
-                                                                                                                                                                                                                                                                                                7. Change the style of the delete button using the id you provided:
+````
+6. Open up the main.css file in url/public/stylesheets/main.css
+7. Change the style of the delete button using the id you provided:
+````
 #delete-form {
     display: inline;
 }
-                                                                                                                                                                                                                                                                                                   8. Restart the server, the delete button should now sit beside the edit button.
+````
+8. Restart the server, the delete button should now sit beside the edit button.
 
 
-Video 24
-## Authorisation
-                                                                                                                                                                                                                                                                                                   * User can only edit his/her campgrounds
-                                                                                                                                                                                                                                                                                                   * User can only delete his/her campgrounds
-                                                                                                                                                                                                                                                                                                   * Hide/show edit and delete buttons
+## Video 24
+### Authorisation
+* User can only edit his/her campgrounds
+* User can only delete his/her campgrounds
+* Hide/show edit and delete buttons
 
-
-                                                                                                                                                                                                                                                                                                   1. Open campgrounds.js found in the routes directory
-   Goorm routes/campgrounds.js
-                                                                                                                                                                                                                                                                                                   2. Write a new function that checks if a user is logged in and if a user matches the owner of a site:
+1. Open campgrounds.js found in the routes directory
+````goorm routes/campgrounds.js````
+2. Write a new function that checks if a user is logged in and if a user matches the owner of a site:
+````
 function checkCampgroundOwnership(req, res, next){
     if(req.isAuthenticated()){
         Campground.findById(req.params.id, function(err, foundCampground){
@@ -1940,16 +2030,22 @@ function checkCampgroundOwnership(req, res, next){
         res.redirect("back");        
     }
 }
-                                                                                                                                                                                                                                                                                                      3. Add this middleware to the edit route and delete all unrequired code:
+````
+3. Add this middleware to the edit route and delete all unrequired code:
+````
 router.get("/:id/edit", checkCampgroundOwnership, function(req, res){
     Campground.findById(req.params.id, function(err, foundCampground){
         res.render("campgrounds/edit", {campground: foundCampground});        
     });
 });
-                                                                                                                                                                                                                                                                                                         4. Add the middleware to Update and Destroy routes too:
+````
+4. Add the middleware to Update and Destroy routes too:
+````
 router.put("/:id", checkCampgroundOwnership, function(req, res){...
 router.delete("/:id", checkCampgroundOwnership, function(req, res){...
-                                                                                                                                                                                                                                                                                                         5. Go to views/campgrounds/show.ejs and add an if statement around the edit and delete buttons:
+````
+5. Go to views/campgrounds/show.ejs and add an if statement around the edit and delete buttons:
+````
 <% if(currentUser && campground.author.id.equals(currentUser._id)){ %>
     <a class="btn btn-warning" href="/campgrounds/<%= campground._id %>/edit">Edit</a>
     <form id="delete-form" action="/campgrounds/<%= campground._id %>?_method=DELETE" method="POST">
@@ -1958,36 +2054,42 @@ router.delete("/:id", checkCampgroundOwnership, function(req, res){...
         </button>
     </form>
 <% } %>
-                                                                                                                                                                                                                                                                                                            6. Restart the server and check to see if a user can edit any campgrounds they dont own.
+````
+6. Restart the server and check to see if a user can edit any campgrounds they dont own.
 At this point I had to clear my mongo database as an error was occurring when trying to edit a campground that had no owner.
 
 
-Video 25
-##Editing Comments
-                                                                                                                                                                                                                                                                                                               * Add Edit route for comments
-                                                                                                                                                                                                                                                                                                               * Add Edit button
-                                                                                                                                                                                                                                                                                                               * Add Update route
+## Video 25
+### Editing Comments
+* Add Edit route for comments
+* Add Edit button
+* Add Update route
 
-
-                                                                                                                                                                                                                                                                                                               1. In comments.js found in the routes/comments directory add an edit route:
+1. In comments.js found in the routes/comments directory add an edit route:
+````
 router.get("/:comment_id/edit", function(req, res){
     res.send("Edit route for comment");
 });
-                                                                                                                                                                                                                                                                                                                  2. Restart the server and navigate to an campground comment edit route:
-/url/campgrounds/:id/comments/jibberish
-                                                                                                                                                                                                                                                                                                                  3. The Edit route for comment message should be displayed.
-                                                                                                                                                                                                                                                                                                                  4. Open show.ejs in the views/campgrounds directory
-                                                                                                                                                                                                                                                                                                                  5. Add a button under the comment.text paragraph:
+````
+2. Restart the server and navigate to an campground comment edit route:
+````/url/campgrounds/:id/comments/jibberish````
+3. The Edit route for comment message should be displayed.
+4. Open show.ejs in the views/campgrounds directory
+5. Add a button under the comment.text paragraph:
+````
 <a class="btn btn-xs btn-warning" href="/campgrounds/<%= campground._id %>/comments/<%= comment._id %>/edit">
     Edit
 </a>
-                                                                                                                                                                                                                                                                                                                     6. Now create an edit.ejs file in the views/comments directory and open it:
-Touch views/comments/edit.ejs
-Goorm views/comments/edit.ejs
-                                                                                                                                                                                                                                                                                                                     7. Copy the contents from views/comments/new.ejs and paste in to views/comments/edit.ejs
-                                                                                                                                                                                                                                                                                                                     8. Change the form for editing purposes:
+````
+6. Now create an edit.ejs file in the views/comments directory and open it:
+````touch views/comments/edit.ejs```` 
+````goorm views/comments/edit.ejs````
+7. Copy the contents from views/comments/new.ejs and paste in to views/comments/edit.ejs
+8. Change the form for editing purposes:
+````
 <h1 style="text-align: center;">
-    Edit Comment</h1>
+    Edit Comment
+</h1>
 <div style="width: 30%; margin: 25px auto;">
     <form action="/campgrounds/<%= campground_id %>/comments/<%= comment._id %>?_method=PUT" method="POST">
         <div class="form-group">
@@ -2001,9 +2103,11 @@ Goorm views/comments/edit.ejs
     </form>
     <a href="/campgrounds">Go back</a>
 </div>
-                                                                                                                                                                                                                                                                                                                        9. In comments.js update the update route:
+````
+9. In comments.js update the update route:
+````
 router.put("/:comment_id", function(req, res){
-Comment.findByIdAndUpdate(req.params.comment_id, req.body.comment, function(err, updatedComment){
+    Comment.findByIdAndUpdate(req.params.comment_id, req.body.comment, function(err, updatedComment){
         if(err){
             res.redirect("back");
         } else {
@@ -2011,16 +2115,17 @@ Comment.findByIdAndUpdate(req.params.comment_id, req.body.comment, function(err,
         }
     });
 });
-                                                                                                                                                                                                                                                                                                                           10. Restart the server, you should be able to edit comments
+````
+10. Restart the server, you should be able to edit comments
 
 
-Video 26
-##Deleting Comments
-                                                                                                                                                                                                                                                                                                                           * Add Destroy route
-                                                                                                                                                                                                                                                                                                                           * Add Delete button
+## Video 26
+### Deleting Comments
+* Add Destroy route
+* Add Delete button
 
-
-                                                                                                                                                                                                                                                                                                                           1. In /routes/comments/js write the following route:
+1. In /routes/comments/js write the following route:
+````
 router.delete("/:comment_id", function(req, res){
     //findByIdAndRemove
     Comment.findByIdAndRemove(req.params.comment_id, function(err){
@@ -2031,25 +2136,30 @@ router.delete("/:comment_id", function(req, res){
         }
     });
 });
-                                                                                                                                                                                                                                                                                                                              2. In /views/campgrounds/show.ejs add a button under the edit button:
+````
+2. In /views/campgrounds/show.ejs add a button under the edit button:
+````
 <form action="/campgrounds/<%= campground._id %>/comments/<%= comment._id %>?_method=DELETE" method="POST" class="delete-form" >
     <input type="submit" class="btn btn-xs btn-danger" value="Delete">
 </form>
-                                                                                                                                                                                                                                                                                                                                 3. Change the delete-form id in /public/stylesheets/main/css from an id to a class:
+````
+3. Change the delete-form id in /public/stylesheets/main/css from an id to a class:
+````
 .delete-form {
     display: inline;
 }
+````
 
 
-Video 27
-##Authorisation
-                                                                                                                                                                                                                                                                                                                                    * User can only edit his/her comments
-                                                                                                                                                                                                                                                                                                                                    * User can only delete his/her comments
-                                                                                                                                                                                                                                                                                                                                    * Hide/Show buttons
-                                                                                                                                                                                                                                                                                                                                    * Refactor middleware
+## Video 27
+### Authorisation
+* User can only edit his/her comments
+* User can only delete his/her comments
+* Hide/Show buttons
+* Refactor middleware
 
-
-                                                                                                                                                                                                                                                                                                                                    1. Copy the middleware from /routes/campgrounds.js for checking ownership and paste in to /routes/comments.js and edit to reflect its use for comments:
+1. Copy the middleware from /routes/campgrounds.js for checking ownership and paste in to /routes/comments.js and edit to reflect its use for comments:
+````
 function checkCommentsOwnership(req, res, next){
     if(req.isAuthenticated()){
         Comment.findById(req.params.comment_id, function(err, foundComment){
@@ -2068,11 +2178,15 @@ function checkCommentsOwnership(req, res, next){
         res.redirect("back");        
     }
 }
-                                                                                                                                                                                                                                                                                                                                       2. Add the middleware to routes:
+````
+2. Add the middleware to routes:
+````
 router.get("/:comment_id/edit", checkCommentsOwnership, function(req, res){...
 router.put("/:comment_id", checkCommentsOwnership, function(req, res){...
 router.delete("/:comment_id", checkCommentsOwnership, function(req, res){...
-                                                                                                                                                                                                                                                                                                                                       3. In /views/campgrounds/show.ejs add another if statement around the comment buttons:
+````
+3. In /views/campgrounds/show.ejs add another if statement around the comment buttons:
+````
 <% if(currentUser && comment.author.id.equals(currentUser._id)){ %>
     <a class="btn btn-xs btn-warning" href="/campgrounds/<%= campground._id %>/comments/<%= comment._id %>/edit">
         Edit
@@ -2081,19 +2195,17 @@ router.delete("/:comment_id", checkCommentsOwnership, function(req, res){...
         <input type="submit" class="btn btn-xs btn-danger" value="Delete">
     </form>
 <% } %>
-                                                                                                                                                                                                                                                                                                                                          4. Create a new directory called middleware:
-mkdir/middleware
-                                                                                                                                                                                                                                                                                                                                          5. Create a new file called index.js in middleware:
-Touch middleware/index.js
-                                                                                                                                                                                                                                                                                                                                          6. Open up middleware/index.js and require all objects, create an object for middleware, create an export, and copy and paste all the middleware from the files in routes and paste them here:
+````
+4. Create a new directory called middleware:
+````mkdir/middleware````
+5. Create a new file called index.js in middleware:
+````touch middleware/index.js````
+6. Open up middleware/index.js and require all objects, create an object for middleware, create an export, and copy and paste all the middleware from the files in routes and paste them here:
+````
 var Campground = require("../models/campground");
 var Comment = require("../models/comment");
-
-
 // all the middleware goes here
 var middlewareObj = {};
-
-
 middlewareObj.checkCampgroundOwnership = function(req, res, next) {
     if(req.isAuthenticated()){
         Campground.findById(req.params.id, function(err, foundCampground){
@@ -2112,8 +2224,6 @@ middlewareObj.checkCampgroundOwnership = function(req, res, next) {
         res.redirect("back");        
     }
 };
-
-
 middlewareObj.checkCommentOwnership = function(req, res, next){
     if(req.isAuthenticated()){
         Comment.findById(req.params.comment_id, function(err, foundComment){
@@ -2128,35 +2238,20 @@ middlewareObj.checkCommentOwnership = function(req, res, next){
                 }
             }
         });        
-                } else {
+    } else {
         res.redirect("back");        
     }
 };
-
-
 middlewareObj.isLoggedIn = function(req, res, next){
     if(req.isAuthenticated()){
         return next();
     }
     res.redirect("/login");
 };
-
-
 module.exports = middlewareObj
-                                                                                                                                                                                                                                                                                                                                             7. Update all the route files with a require for middleware:
-middleware         = require("../middleware")
-                                                                                                                                                                                                                                                                                                                                             8. Restart the server and check everything works correctly
-
-
-Video 28
-##Adding in Flash!
-                                                                                                                                                                                                                                                                                                                                                * Install and configure connect-flash
-                                                                                                                                                                                                                                                                                                                                                * Add bootstrap alerts to header
-
-
-                                                                                                                                                                                                                                                                                                                                                1. Install connect-flash to your project:
-Npm install --save connect-flash
-                                                                                                                                                                                                                                                                                                                                                2. Require connect flash and use it:
-Var flash = (“connect-flash”);
-app.use(flash());
-                                                                                                                                                                                                                                                                                                                                                3.
+````
+7. Update all the route files with a require for middleware:
+````
+middleware = require("../middleware")
+````
+8. Restart the server and check everything works correctly
